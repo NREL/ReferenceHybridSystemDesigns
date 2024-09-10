@@ -1,7 +1,31 @@
 import numpy as np
 import pandas as pd
 from hopp.utilities import load_yaml
+import yaml
+from hopp.simulation.technologies.resource import SolarResource, WindResource
+from hopp.simulation.technologies.sites import SiteInfo
 import os 
+# from geopy.geocoders import Nominatim
+from pathlib import Path
+
+from dotenv import load_dotenv
+from hopp.utilities.keys import set_developer_nrel_gov_key, set_developer_nrel_gov_email
+
+# Set API key
+load_dotenv()
+NREL_API_KEY = os.getenv("NREL_API_KEY")
+NREL_API_EMAIL = os.getenv("NREL_API_EMAIL")
+set_developer_nrel_gov_key(NREL_API_KEY)  # Set this key manually here if you are not setting it using the .env
+set_developer_nrel_gov_email(NREL_API_EMAIL)
+
+class PrettySafeLoader(yaml.SafeLoader):
+    def construct_python_tuple(self, node):
+        return tuple(self.construct_sequence(node))
+
+PrettySafeLoader.add_constructor(
+    u'tag:yaml.org,2002:python/tuple',
+    PrettySafeLoader.construct_python_tuple)
+
 
 def get_filename_from_partial_name(directory: str, search_string: str):
     """This function finds and returns the first filepath in the 
@@ -24,8 +48,28 @@ def get_filename_from_partial_name(directory: str, search_string: str):
             # Return the path of the found file
             return file_path
     
-    raise(ValueError("No file found containing the string:", search_string))
+    return False
 
+# def get_state_from_lat_long(latitude, longitude):
+#     """From ChatGPT
+
+#     Args:
+#         latitude (float): latitude in degree decimal format
+#         longitude (float): longitude in degree decimal format
+
+#     Returns:
+#         str: state containing given lat lon pair
+#     """
+#     geolocator = Nominatim(user_agent="Jared Thomas")
+#     location = geolocator.reverse((latitude, longitude), exactly_one=True)
+    
+#     if location and 'address' in location.raw:
+#         address = location.raw['address']
+#         state = address.get('state', 'State not found')
+#         return state
+#     else:
+#         return "State not found"
+    
 def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
     ref_sys_path = "../reference-systems/"
     plant_files_path = "greenHEART/input-files/plant/"
@@ -33,26 +77,115 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
     # get all reference design names
     reference_design_names = os.listdir(ref_sys_path)
 
-    # define QOIs
+    # define region/area
+    regions = {"01": "", "02": "", "03": "Gulf Coast", "04": "", "05": ""}
+    products = {"01": "Steel", "02": "Ammonia", "03": "Hydrogen", "04": "Hydrogen", "05": "Hydrogen"}
+    foundation_type = {"01": "", "02": "", "03": "Fixed", "04": "Fixed", "05": "Floating"}
+    storage_keys = {"lined_rock_cavern": "Rock cavern", "salt_cavern": "Salt cavern", "none": "None", "pipe": "Underground pipes", "turbine": "In-turbine", "pressure_vessel": "Pressure vessel"}
+    states = {"01": "Minnesota", "02": "Texas", "03": "Texas", "04": "New York", "05": "California"}
 
+    qoi_dictionary_list = []
     # loop over designs
     for design in designs_to_compare:
         # get full design name
         design_name = [s for s in reference_design_names if design in s][0]
-
+        print(f"Design: {design_name}")
         # load input files
         greenheart_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "greenheart"))
         hopp_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "hopp"))
-        
-        # combine the input dictionaries
-        combined_inputs = hopp_input | greenheart_input
+        if get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "orbit"):
+            orbit_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "orbit"), loader=PrettySafeLoader)
+        else:
+            orbit_input = False
 
-        # keep only QOIs
-        # create dataframe
-        # combine dataframes of all designs
+        # get lat lon
+        lat = hopp_input["site"]["data"]["lat"]
+        lon = hopp_input["site"]["data"]["lon"]
+
+        # get QOIs
+        qoi = {}
+        qoi["ID"] = design
+        qoi["State"] = states[design] #get_state_from_lat_long(latitude=lat, longitude=lon)
+        qoi["Area"] = regions[design]
+        qoi["Product"] = products[design]
+        qoi["On/Offshore"] = greenheart_input["plant_design"]["scenario0"]["wind_location"].capitalize()
+        qoi["Turbine foundation"] = foundation_type[design]
+        qoi["Hydrogen storage type"] = storage_keys[greenheart_input["h2_storage"]["type"]]
+        qoi["PEM electrolyzer rating (MW)"] = (greenheart_input["electrolyzer"]["rating"])
+        num_turbines = hopp_input["technologies"]["wind"]["num_turbines"]
+        turbine_rating_kw = hopp_input["technologies"]["wind"]["turbine_rating_kw"]
+        qoi["Wind farm rating (MW)"] = num_turbines*turbine_rating_kw*1E-3
+        qoi["Solar PV rating (MW)"] = hopp_input["technologies"]["pv"]["system_capacity_kw"]*1E-3
+        qoi["Total generation rating (MW)"] = qoi["Wind farm rating (MW)"] + qoi["Solar PV rating (MW)"]
+        qoi["Battery power rating (MW)"] = hopp_input["technologies"]["battery"]["system_capacity_kw"]*1E-3
+        qoi["Battery power rating (MWh)"] = hopp_input["technologies"]["battery"]["system_capacity_kwh"]*1E-3
+        qoi["Number of wind turbines"] = num_turbines
+        qoi["Wind turbine rating (MW)"] = turbine_rating_kw*1E-3
+
+        solar_filename = hopp_input["site"]["solar_resource_file"].split("/")[-1]
+        wind_filename = hopp_input["site"]["wind_resource_file"].split("/")[-1]
+
+        if qoi["On/Offshore"] == "Onshore":
+            qoi["Onshore latitude"] = float(lat)
+            qoi["Onshore longitude"] = float(lon)
+        else:
+            qoi["Onshore latitude"] = float(solar_filename.split("_")[0])
+            qoi["Onshore longitude"] = float(solar_filename.split("_")[1])
+
+        # qoi["Elevation (ft)"] = hopp_input["site"]["data"]["elev"]
+
+        if qoi["On/Offshore"] == "Offshore":
+            qoi["Offshore latitude"] = float(lat)
+            qoi["Offshore longitude"] = float(lon)
+        # else:
+        #     qoi["Offshore latitude"] = "N/A
+        #     qoi["Offshore longitude"] = "N/A"
+
+        if orbit_input:
+            qoi["Distance from shore (km)"] = orbit_input["site"]["distance_to_landfall"]
+            qoi["Depth (m)"] = orbit_input["site"]["depth"]
+    
+        resource_path = Path(ref_sys_path, design_name, "greenHEART/input-files/weather/")
+        full_solar_file_path = Path(resource_path, "solar", solar_filename).absolute()
+        
+
+        full_wind_file_path = Path(resource_path, "wind", wind_filename).absolute()
+        site = SiteInfo(data=hopp_input["site"]["data"], solar_resource_file=full_solar_file_path, wind_resource_file=full_wind_file_path)
+        
+        
+        solar_resource = site.solar_resource
+        qoi["Direct horizontal irradience (kWh/m$^2$)"] = np.average(solar_resource.data["df"])
+
+        wind_resource = site.wind_resource
+        wind_data = wind_resource.data["data"]
+        wind_speed = [W[2] for W in wind_data]
+        qoi["Average wind speed"] = np.average(wind_speed)
+
+        qoi_dictionary_list.append(qoi)
+    
+    # create dataframe
+    qoi_df = pd.DataFrame(qoi_dictionary_list)
+    qoi_df = qoi_df.set_index(keys=["ID"], drop=True)
+    # qoi_df = qoi_df.set_index("ID")
+    
+    # Round only the numeric columns
+    # qoi_df_numeric_rounded = qoi_df.select_dtypes(include=[np.number]).round(2)
+
+    # Combine the rounded numeric columns with the non-numeric columns
+    # qoi_df = pd.concat([qoi_df_numeric_rounded, qoi_df.select_dtypes(exclude=[np.number])], axis=1)
+
+    general_format = "{:.4f}".format
+    # formatters = {
+    #     'Onshore latitude': lambda x: f"{x:.4f}", 
+    #     'Offshore longitude': lambda x: f"{x:.4f}",   
+    #     'Onshore latitude': lambda x: f"{x:.4f}",    
+    #     'Offshore longitude': lambda x: f"{x:.4f}"
+    # }
 
     # print latex table
-    
+    print(qoi_df.dtypes)
+    print(qoi_df.round(2))
+    print(qoi_df.fillna("N/A").T.to_latex(float_format=general_format))
 
     return 0
 
