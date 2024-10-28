@@ -18,13 +18,29 @@ NREL_API_EMAIL = os.getenv("NREL_API_EMAIL")
 set_developer_nrel_gov_key(NREL_API_KEY)  # Set this key manually here if you are not setting it using the .env
 set_developer_nrel_gov_email(NREL_API_EMAIL)
 
-class PrettySafeLoader(yaml.SafeLoader):
-    def construct_python_tuple(self, node):
-        return tuple(self.construct_sequence(node))
+# Define a custom loader to ignore unknown YAML tags or objects
+class CombinedLoader(yaml.SafeLoader):
+    pass
+def construct_python_tuple(self, node):
+    return tuple(self.construct_sequence(node))
+def ignore_unknown(self, node):
+    return None  # Ignore and return None for any unknown object
+def ignore_unknown_tags(self, tag_suffix, node):
+    return None  # Ignore and return None for any unknown object
 
-PrettySafeLoader.add_constructor(
+# Add the handler to the loader
+CombinedLoader.add_constructor(None, ignore_unknown)
+
+CombinedLoader.add_constructor(
     u'tag:yaml.org,2002:python/tuple',
-    PrettySafeLoader.construct_python_tuple)
+    construct_python_tuple)
+
+CombinedLoader.add_multi_constructor('tag:yaml.org,2002:python/object', ignore_unknown_tags)
+CombinedLoader.add_multi_constructor('!python/object:', ignore_unknown_tags)
+CombinedLoader.add_multi_constructor('!', ignore_unknown)
+# Register a constructor to catch all python object apply tags (like NumPy)
+CombinedLoader.add_multi_constructor('tag:yaml.org,2002:python/object/apply', ignore_unknown_tags)
+
 
 
 def get_filename_from_partial_name(directory: str, search_string: str):
@@ -73,6 +89,7 @@ def get_filename_from_partial_name(directory: str, search_string: str):
 def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
     ref_sys_path = "../reference-systems/"
     plant_files_path = "greenHEART/input-files/plant/"
+    output_files_path = "greenHEART/output/data/"
 
     # get all reference design names
     reference_design_names = os.listdir(ref_sys_path)
@@ -94,9 +111,12 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
         greenheart_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "greenheart"))
         hopp_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "hopp"))
         if get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "orbit"):
-            orbit_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "orbit"), loader=PrettySafeLoader)
+            orbit_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "orbit"), loader=CombinedLoader)
         else:
             orbit_input = False
+        ghout_path = get_filename_from_partial_name(ref_sys_path+design_name+"/"+output_files_path, "greenheart_output")
+        with open(ghout_path) as f:
+            greenheart_output = yaml.full_load(f)
 
         # get lat lon
         lat = hopp_input["site"]["data"]["lat"]
@@ -108,7 +128,7 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
         qoi["State"] = states[design] #get_state_from_lat_long(latitude=lat, longitude=lon)
         qoi["Area"] = regions[design]
         qoi["Product"] = products[design]
-        qoi["On/Offshore"] = greenheart_input["plant_design"]["scenario0"]["wind_location"].capitalize()
+        qoi["On/Offshore"] = greenheart_input["plant_design"][f"scenario{int(design)}"]["wind_location"].capitalize()
         qoi["Turbine foundation"] = foundation_type[design]
         qoi["Hydrogen storage type"] = storage_keys[greenheart_input["h2_storage"]["type"]]
         qoi["PEM electrolyzer rating (MW)"] = (greenheart_input["electrolyzer"]["rating"])
@@ -119,6 +139,9 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
         qoi["Total generation rating (MW)"] = qoi["Wind farm rating (MW)"] + qoi["Solar PV rating (MW)"]
         qoi["Battery power rating (MW)"] = hopp_input["technologies"]["battery"]["system_capacity_kw"]*1E-3
         qoi["Battery power rating (MWh)"] = hopp_input["technologies"]["battery"]["system_capacity_kwh"]*1E-3
+        # import pdb; pdb.set_trace()
+        qoi["Hydrogen storage capacity (kt)"] = greenheart_output["h2_storage_capacity_kg"]*1E-6
+        qoi["Hydrogen storage max fill rate (t/h)"] = greenheart_output["h2_storage_max_fill_rate_kg_hr"]*1E-3
         qoi["Number of wind turbines"] = num_turbines
         qoi["Wind turbine rating (MW)"] = turbine_rating_kw*1E-3
 
@@ -160,6 +183,20 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
         wind_data = wind_resource.data["data"]
         wind_speed = [W[2] for W in wind_data]
         qoi["Average wind speed"] = np.average(wind_speed)
+
+        if "steel_capacity" in greenheart_output.keys() and greenheart_output["steel_capacity"] is not None:
+            qoi["Steel Capacity (Mt/yr)"] = greenheart_output["steel_capacity"][0]["steel_plant_capacity_mtpy"]*1E-6
+        
+        if "ammonia_capacity" in greenheart_output.keys() and greenheart_output["ammonia_capacity"] is not None:
+            qoi["Ammonia Capacity (kt/yr)"] = greenheart_output["ammonia_capacity"][0]["ammonia_plant_capacity_kgpy"]*1E-6
+
+        qoi["LCOH (USD/kg)"] = greenheart_output["lcoh"]
+
+        if "steel_finance" in greenheart_output.keys() and greenheart_output["steel_finance"] is not None:
+            qoi["LCOS (USD/t)"] = greenheart_output["steel_finance"][0]["sol"]["price"]
+        
+        if "ammonia_finance" in greenheart_output.keys() and greenheart_output["ammonia_finance"] is not None:
+            qoi["LCOA (USD/kg)"] = greenheart_output["ammonia_finance"][0]["sol"]["price"]
 
         qoi_dictionary_list.append(qoi)
     

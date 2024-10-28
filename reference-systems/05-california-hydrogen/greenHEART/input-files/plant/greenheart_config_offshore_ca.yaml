@@ -157,7 +157,7 @@ policy_parameters: # these should be adjusted for inflation prior to application
     h2_storage_itc: 0.5
 
 plant_design:
-  scenario0:
+  scenario5:
     electrolyzer_location: "onshore" # can be one of ["onshore", "turbine", "platform"]
     transportation: "hvdc" # can be one of ["hvdc", "pipeline", "none", hvdc+pipeline, "colocated"]
     h2_storage_location: "onshore" # can be one of ["onshore", "turbine", "platform"]

@@ -22,8 +22,8 @@ if __name__ == "__main__":
         use_profast=True,
         post_processing=True,
         incentive_option=1,
-        plant_design_scenario=0,
-        output_level=7,
+        plant_design_scenario=2,
+        output_level=8,
     )
 
     # for analysis
