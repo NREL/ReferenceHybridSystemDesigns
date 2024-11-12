@@ -14,7 +14,7 @@ initialize_library(os.path.join(os.getcwd(), "./input-files/"))
 if __name__ == "__main__":
     # load inputs as needed
     turbine_model = "osw_15MW"
-    region = "ny"
+    region = "nyb"
     filename_turbine_config = "./input-files/turbines/"+ turbine_model +".yaml"
     filename_floris_config = "./input-files/floris/floris_input_"+ turbine_model+ ".yaml"
     filename_hopp_config = "./input-files/plant/hopp_config_"+region+".yaml"

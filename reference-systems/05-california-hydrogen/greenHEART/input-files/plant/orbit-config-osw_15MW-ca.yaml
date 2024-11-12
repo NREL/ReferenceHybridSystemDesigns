@@ -43,32 +43,32 @@ array_system_design:
   - XLPE_630mm_66kV_dynamic
 export_system_design:
   cables:
-  - XLPE_1000m_220kV_dynamic #HVAC
+  - XLPE_1000mm_220kV_dynamic #HVAC
   # - HVDC_2000mm_320kV_dynamic # HVDC lines
   percent_added_length: 0.1
 mooring_system_design:
   num_lines: 3
   drag_embedment_fixed_length: 0
+  anchor_type: Drag Embedment
+  mooring_type: Semitaut
 # Configured Phases
+
 design_phases:
 - ArraySystemDesign # from ORBIT/examples/configs/example_floating_project.yaml
-- SemiSubmersibleDesign # from ORBIT/examples/configs/example_floating_project.yaml
 - ElectricalDesign 
-- SemiTautMooringSystemDesign
+- MooringSystemDesign
 - OffshoreFloatingSubstationDesign
+- SemiSubmersibleDesign # from ORBIT/examples/configs/example_floating_project.yaml
 install_phases:
-     # Define some dependent start times, ie, Array Cables start when Monopile are 100% complete
-  ArrayCableInstallation: !!python/tuple
-  - MonopileInstallation
-  - 1.0
-  ArrayCableInstallation: !!python/tuple
-  - MooredSubInstallation
-  - 0.5 # Start array cable installation when 50% of floaters are installed
   ExportCableInstallation: 0
+  MooringSystemInstallation: 0
   MooredSubInstallation: !!python/tuple
   - MooringSystemInstallation
   - 0.5 # Start substructure install when 50% of mooring lines installed
-  MooringSystemInstallation: 0
+  ArrayCableInstallation: !!python/tuple
+  - MooredSubInstallation
+  - 0.5 # Start array cable installation when 50% of floaters are installed
+  
   # OffshoreSubstationInstallation: !!python/tuple
   FloatingSubstationInstallation: !!python/tuple
   - ExportCableInstallation

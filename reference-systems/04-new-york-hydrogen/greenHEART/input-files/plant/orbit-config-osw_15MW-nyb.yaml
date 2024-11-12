@@ -1,15 +1,15 @@
-turbine: "osw_17MW"
+turbine: "osw_15MW"
 installation_availability: 0.7 # 30% downtime during installation to match ORCA
 site:
   area: 142 # km^2
-  depth: 45  # m - this value is overridden by greenheart config
-  distance: 141.5414 # km
-  distance_to_landfall: 44.74089 # km
+  depth: 34 # m - this value is overridden by greenheart config
+  distance: 96.19027 # km
+  distance_to_landfall: 71.12694 # km
   mean_windspeed: False # required input for ORBIT, provide desired mean wind speed or set to False to give ORBIT the mean wind speed from the lat/lon selection
 plant:
-  capacity: 986 # MW
+  capacity: 990 # MW
   layout: grid
-  num_turbines: 58 # needs to be changed based on turbine model - this value is overridden by greenheart config
+  num_turbines: 66 # needs to be changed based on turbine model - this value is overridden by greenheart config
   row_spacing: 7 # rotor diameters # based on rule of thumb of 7D - this value is overridden by greenheart config
   substation_distance: 1 # from ORBIT/examples/configs/example_fixed_project.yaml
   turbine_spacing: 7 # rotor diameters # original 10 - this value is overridden by greenheart config
@@ -24,7 +24,6 @@ export_cable_install_vessel: example_cable_lay_vessel # from ORBIT/examples/conf
 oss_install_vessel: example_heavy_lift_vessel # from ORBIT/examples/configs/example_fixed_project.yaml
 spi_vessel: example_scour_protection_vessel # from ORBIT/examples/configs/example_fixed_project.yaml
 wtiv: example_wtiv # from ORBIT/examples/configs/example_fixed_project.yaml
-
 # Module Specific
 OffshoreSubstationInstallation:
   feeder: example_heavy_feeder # from ORBIT/examples/configs/example_fixed_project.yaml
@@ -37,8 +36,8 @@ array_system_design:
   - XLPE_630mm_66kV
 export_system_design:
   cables: 
-  # - HVDC_2000mm_320kV # as done for OSW HVDC
-  - XLPE_1000m_220kV # HVAC
+  - HVDC_2000mm_320kV # as done for OSW HVDC
+  # - XLPE_1000m_220kV # HVAC
   percent_added_length: 0.1 # ORBIT/WISDEM default
 scour_protection_design:
   cost_per_tonne: 40 # OSW
@@ -51,7 +50,9 @@ design_phases:
 - ArraySystemDesign # from ORBIT/examples/configs/example_fixed_project.yaml
 - MonopileDesign # from ORBIT/examples/configs/example_fixed_project.yaml
 - ScourProtectionDesign # from ORBIT/examples/configs/example_fixed_project.yaml
-- ElectricalDesign
+- ElectricalDesign 
+
+
 
 install_phases: # based on Fig. B-7 in https://www.boem.gov/sites/default/files/environmental-stewardship/Environmental-Studies/Renewable-Energy/Phased-Approaches-to-Offshore-Wind-Developments-and-Use-of-Project-Design-Envelope.pdf
   MonopileInstallation: 0 # from ORBIT/examples/configs/example_fixed_project.yaml
@@ -70,4 +71,4 @@ install_phases: # based on Fig. B-7 in https://www.boem.gov/sites/default/files/
 # Wind Project Inputs
 project_parameters:
   turbine_capex: 1500 # $USD turbine CAPEX only as per discussion with Matt Shields 
-  opex_rate: 53.25648 #osw national analysis, $USD/kW/yr ATB 2022, OpEx based on R&D assumptions with a base year of 2022. ATB https://atb.nrel.gov/electricity/2022/offshore_wind
+  opex_rate: 57.67069 #osw national analysis, $USD/kW/yr ATB 2022, OpEx based on R&D assumptions with a base year of 2022. ATB https://atb.nrel.gov/electricity/2022/offshore_wind

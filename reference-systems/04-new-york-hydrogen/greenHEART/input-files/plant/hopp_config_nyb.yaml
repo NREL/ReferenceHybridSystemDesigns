@@ -1,10 +1,10 @@
 site: #!include flatirons_site.yaml
   data:
-    lat: 27.18077
-    lon: -96.933
+    lat: 39.53968
+    lon: -73.3299
     elev: 0
     year: 2013
-    site_boundaries: # Not used in offshore simulation. Site determined using orbit.
+    site_boundaries: 
       verts:  
         - [0.0, 0.0]
         - [0.0, 2000.0]
@@ -15,11 +15,11 @@ site: #!include flatirons_site.yaml
         - [0.0, 2000.0]
         - [2000.0, 2000.0]
         - [2000.0, 0.0]
-  solar_resource_file: "input-files/weather/solar/27.609619705160302_-97.40229985722155_27.7372_-97.5426_psm3_60_2013.csv" # Solar location is onshore
-  wind_resource_file: "input-files/weather/wind/27.18077_-96.933_windtoolkit_2013_60min_160m_200m.srw"
+  solar_resource_file: "../../input-files/weather/solar/39.775513844941386_-74.23021768906683_39.7783_-74.2301_psm3_60_2013.csv" # Solar location is onshore
+  wind_resource_file: "../../input-files/weather/wind/39.53968_-73.3299_windtoolkit_2013_60min_140m_160m.srw"
   wave_resource_file: ""
   grid_resource_file: ""
-  hub_height: 168.0
+  hub_height: 150.0
   capacity_hours: []
   solar: true
   wind: true
@@ -28,19 +28,19 @@ site: #!include flatirons_site.yaml
   
 technologies:
   wind:
-    num_turbines: 58
-    turbine_rating_kw: 17000.0
+    num_turbines: 66
+    turbine_rating_kw: 15000.0
     model_name: floris
     timestep: [0, 8760]
-    floris_config: input_files/floris/floris_input_osw_17MW.yaml
+    floris_config: input_files/floris/floris_input_osw_15MW.yaml
     fin_model: !include default_fin_config.yaml
   pv:
     system_capacity_kw: 1500000
     dc_degradation: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     fin_model: !include default_fin_config.yaml
   battery:
-    system_capacity_kwh: 1499997
-    system_capacity_kw: 375712.5
+    system_capacity_kwh: 1499998
+    system_capacity_kw: 375723.4
     minimum_SOC: 20.0
     maximum_SOC: 100.0
     initial_SOC: 90.0

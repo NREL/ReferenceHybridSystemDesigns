@@ -57,9 +57,9 @@ def load_performance_data(site):
     elif site == 2:
         data = load_yaml("../reference-systems/02-texas-ammonia/greenHEART/input-files/turbines/ATB2024_6MW_170RD_floris_turbine.yaml")
     elif site == 3:
-        data = load_yaml("../reference-systems/03-gulf_of_mexico-hydrogen/greenHEART/input-files/turbines/osw_17MW.yaml")
+        data = load_yaml("../reference-systems/03-gulf-of-mexico-hydrogen/greenHEART/input-files/turbines/osw_17MW.yaml")
     elif site == 4:
-        data = load_yaml("../reference-systems/04-new_york-hydrogen/greenHEART/input-files/turbines/osw_15MW.yaml")
+        data = load_yaml("../reference-systems/04-new-york-bight-hydrogen/greenHEART/input-files/turbines/osw_15MW.yaml")
     elif site == 5:
         data = load_yaml("../reference-systems/05-california-hydrogen/greenHEART/input-files/turbines/osw_15MW.yaml")
 

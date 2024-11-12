@@ -16,7 +16,7 @@ This repository is intended to house reference hybrid system designs created at 
 | 01 | Minnesota | Steel | Yes (ore and steel tech only) | Wind, solar (pv), battery storage, electrolysis, hydrogen storage (rock cavern), iron ore refining, steel production | N/A |
 | 02 | Texas | Ammonia | No | Wind, solar (pv), battery storage, electrolysis, hydrogen storage (salt cavern), ammonia production| N/A |
 | 03 | Texas (gulf coast) | Hydrogen | No | Solar (pv), battery storage, electrolysis, hydrogen storage (salt cavern) | Wind (fixed foundation) |
-| 04 | New York | Hydrogen | No | Solar (pv), battery storage, electrolysis, hydrogen storage (rock cavern) | Wind (fixed foundation) |
+| 04 | New York Bight | Hydrogen | No | Solar (pv), battery storage, electrolysis, hydrogen storage (rock cavern) | Wind (fixed foundation) |
 | 05 | California | Hydrogen | No | Solar (pv), battery storage, electrolysis, hydrogen storage (rock cavern) | Wind (floating foundation) |
 
 ## Getting Started
