@@ -95,11 +95,11 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
     reference_design_names = os.listdir(ref_sys_path)
 
     # define region/area
-    regions = {"01": "", "02": "", "03": "Gulf Coast", "04": "", "05": ""}
+    regions = {"01": "", "02": "", "03": "Gulf Coast", "04": "New York Bight", "05": ""}
     products = {"01": "Steel", "02": "Ammonia", "03": "Hydrogen", "04": "Hydrogen", "05": "Hydrogen"}
     foundation_type = {"01": "", "02": "", "03": "Fixed", "04": "Fixed", "05": "Floating"}
     storage_keys = {"lined_rock_cavern": "Rock cavern", "salt_cavern": "Salt cavern", "none": "None", "pipe": "Underground pipes", "turbine": "In-turbine", "pressure_vessel": "Pressure vessel"}
-    states = {"01": "Minnesota", "02": "Texas", "03": "Texas", "04": "New York Bight", "05": "California"}
+    states = {"01": "Minnesota", "02": "Texas", "03": "Texas", "04": "New Jersey", "05": "California"}
 
     qoi_dictionary_list = []
     # loop over designs
