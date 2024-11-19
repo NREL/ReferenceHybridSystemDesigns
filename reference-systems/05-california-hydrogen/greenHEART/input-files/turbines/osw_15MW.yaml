@@ -1,11 +1,37 @@
+# [1] https://www.nrel.gov/docs/fy20osti/75698.pdf
+# [2] https://github.com/IEAWindTask37/IEA-15-240-RWT/blob/97cf629a622270ed421de98abf99f4314044fcf2/Documentation/IEA-15-240-RWT_tabular.xlsx
+# [3] https://github.com/NREL/floris/blob/main/floris/turbine_library/iea_15MW.yaml
 turbine_type: osw_15MW
-hub_height: 150.0
-rotor_diameter: 242.24
-TSR: 9.0
+rated_windspeed: 10.66 # m/s [2]
+turbine_rating: 15 # MW [2]
+hub_height: 150.0 # m [2]
+rotor_diameter: 242.24 # m [2]
+TSR: 9.0 # [2]
 operation_model: cosine-loss
+tower:
+  deck_space: 78.5 # m^2 based on OSW 15 MW turbine --> 10 m diam base pi*d^2/4 #TODO
+  sections: 2 
+  type: Tower
+  length: 144.386 # m [2]
+  mass: 853.4632377 #t [2]
+  section_diameters: # m [2] - diameter for bottom and top
+    - 10.0 
+    - 6.5 #  8.833m at 67m height
+  section_heights: # m [2] - just bottom and top
+    - 0 
+    - 144.386
+nacelle:
+  deck_space: 242 # Shields 203     # m^2 old #TODO
+  type: Nacelle
+  mass: 675.175454 # t [2]
+blade:
+  deck_space: 480 # Shields et al. 608 IEA-15   # m^2 (length * root diam) #TODO
+  length: 117  # m [1]
+  type: Blade
+  mass: 68.4152932 # t [2]
 power_thrust_table:
   ref_air_density: 1.225
-  ref_tilt: 6.0
+  ref_tilt: 6.0  # [3]
   cosine_loss_exponent_yaw: 1.88
   cosine_loss_exponent_tilt: 1.88
   wind_speed:
