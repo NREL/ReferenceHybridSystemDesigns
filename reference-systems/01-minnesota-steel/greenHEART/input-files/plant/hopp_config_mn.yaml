@@ -2,7 +2,7 @@ site: #!include flatirons_site.yaml
   data:
     lat: 47.5233
     lon: -92.5366
-    elev: 1099
+    elev: 440
     year: 2013
     tz: -6
     site_boundaries: # enlarged boundaries to fit all turbines
