@@ -22,22 +22,22 @@ system_costs:
 system_use_lifetime_output: 0
 financial_parameters:
   inflation_rate: 0.0 # nominal basis
-  real_discount_rate: 0.11 # nominal return based on 2022 ATB basline workbook
+  real_discount_rate: 0.063 # nominal return based on 2024 ATB baseline workbook
   federal_tax_rate: 21.0 
-  state_tax_rate: 8.84
-  property_tax_rate: 1.0
+  state_tax_rate: 0.0
+  property_tax_rate: 1.47
   insurance_rate: 0.5
-  debt_percent: 63.23
-  term_int_rate: 5.0
+  debt_percent: 72.4 # based on 2024 ATB
+  term_int_rate: 4.4 # based on 2024 ATB
   months_working_reserve: 1
   analysis_start_year: 2025
-  installation_months: 12
-  sales_tax_rate_state: 8.85
-  admin_expense_percent_of_sales: 0.0
-  capital_gains_tax_rate: 15.0
-  debt_type: "Revolving debt"
+  installation_months: 36
+  sales_tax_rate_state: 8.20 # average combined state and local sales tax in TX
+  admin_expense_percent_of_sales: 0.0 # H2FAST default
+  capital_gains_tax_rate: 15.0 # H2FAST default
+  debt_type: "Revolving debt" # H2FAST default
   depreciation_method: "MACRS"
-  depreciation_period: 5
+  depreciation_period: 5 # years - as specified by the IRS MACRS schedule for wind and solar https://www.irs.gov/publications/p946#en_US_2020_publink1000107507
 revenue:
   ppa_price_input: [0.0] # cents/kWh
   ppa_escalation: 0 # %

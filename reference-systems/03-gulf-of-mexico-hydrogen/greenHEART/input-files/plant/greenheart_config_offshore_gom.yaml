@@ -15,15 +15,15 @@ project_parameters:
 finance_parameters:
   costing_general_inflation: 0.025 # used to adjust modeled costs to cost_year
   profast_general_inflation: 0 # 0 for nominal analysis
-  discount_rate: 0.11 # nominal return based on 2022 ATB basline workbook
+  discount_rate: 0.063 # nominal return based on 2024 ATB basline workbook
   debt_equity_split: False # 2022 ATB uses 68.5% debt
-  debt_equity_ratio: 1.72
-  property_tax: 0.01  # percent of CAPEX # combined with property insurance then between H2A and H2FAST defaults
+  debt_equity_ratio: 2.62
+  property_tax: 0.0147  # percent of CAPEX # combined with property insurance then between H2A and H2FAST defaults
   property_insurance: 0.005 # percent of CAPEX # combined with property tax then between H2A and H2FAST defaults
-  total_income_tax_rate: 0.2574 # 0.257 tax rate in 2022 atb baseline workbook
+  total_income_tax_rate: 0.21 # 0.257 tax rate in 2022 atb baseline workbook
   capital_gains_tax_rate: 0.15 # H2FAST default
-  sales_tax_rate: 0.0 #Verify that a different rate shouldn't be used # minimum total sales tax rate in Corpus Christi https://www.cctexas.com/detail/corpus-christi-type-fund-purpose - does this apply to H2?
-  debt_interest_rate: 0.05
+  sales_tax_rate: 8.20 # average combined state and local sales tax in TX
+  debt_interest_rate: 0.044 # based on 2024 ATB
   debt_type: "Revolving debt" # can be "Revolving debt" or "One time loan". Revolving debt is H2FAST default and leads to much lower LCOH
   loan_period: 0 # H2FAST default, not used for revolving debt
   cash_onhand_months: 1 # H2FAST default
