@@ -1,8 +1,8 @@
 site: #!include flatirons_site.yaml
   data:
-    lat: 34.22
-    lon: -102.75
-    elev: 1099
+    lat: 32.31714
+    lon: -100.18
+    elev: 762
     year: 2013
     tz: -6
     site_boundaries: 
