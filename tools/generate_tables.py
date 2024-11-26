@@ -66,29 +66,6 @@ def get_filename_from_partial_name(directory: str, search_string: str):
     
     return False
 
-<<<<<<< HEAD
-# def get_state_from_lat_long(latitude, longitude):
-#     """From ChatGPT
-
-#     Args:
-#         latitude (float): latitude in degree decimal format
-#         longitude (float): longitude in degree decimal format
-
-#     Returns:
-#         str: state containing given lat lon pair
-#     """
-#     geolocator = Nominatim(user_agent="Jared Thomas")
-#     location = geolocator.reverse((latitude, longitude), exactly_one=True)
-    
-#     if location and 'address' in location.raw:
-#         address = location.raw['address']
-#         state = address.get('state', 'State not found')
-#         return state
-#     else:
-#         return "State not found"
-=======
->>>>>>> main
-    
 def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
     ref_sys_path = "../reference-systems/"
     plant_files_path = "greenHEART/input-files/plant/"
