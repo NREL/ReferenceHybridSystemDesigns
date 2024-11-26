@@ -2,3 +2,6 @@
 *.DS_Store
 *output
 speed_dir
+post-process.py
+*/images/*
+*/log/*
