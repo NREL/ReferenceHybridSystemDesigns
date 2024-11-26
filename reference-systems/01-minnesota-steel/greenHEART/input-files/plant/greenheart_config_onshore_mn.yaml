@@ -16,22 +16,22 @@ project_parameters:
   installation_time: 36 # months
 finance_parameters:
   costing_general_inflation: 0.025 # used to adjust modeled costs to cost_year
-  profast_general_inflation: 0 # 0 for nominal analysis
-  discount_rate: 0.0948 # nominal return based on 2022 ATB basline workbook
-  debt_equity_split: False # 2022 ATB uses 68.5% debt
-  debt_equity_ratio: 1.72
-  property_tax: 0.01  # percent of CAPEX # combined with property insurance then between H2A and H2FAST defaults
+  profast_general_inflation: 0.0 # 0 for nominal analysis
+  discount_rate: 0.063 # real return based on 2024 ATB basline workbook for offshore wind
+  debt_equity_split: False # 2024 ATB uses 72.4% debt
+  debt_equity_ratio: 2.62 # 2024 ATB uses 72.4% debt
+  property_tax: 0.0118  # percent of CAPEX  based on St. Louis County MN average
   property_insurance: 0.005 # percent of CAPEX # combined with property tax then between H2A and H2FAST defaults
-  total_income_tax_rate: 0.2574 # 0.257 tax rate in 2022 atb baseline workbook
+  total_income_tax_rate: 0.308 # 0.257 tax rate in 2024 atb baseline workbook, value here is based on federal (21%) and state in MN (9.8)
   capital_gains_tax_rate: 0.15 # H2FAST default
-  sales_tax_rate: 0.0 
-  debt_interest_rate: 0.046
+  sales_tax_rate: 0.0804 # sales tax in MN is 6.875%, with average state and local combined sales tax of 8.04%
+  debt_interest_rate: 0.044 # based on 2024 ATB
   debt_type: "Revolving debt" # can be "Revolving debt" or "One time loan". Revolving debt is H2FAST default and leads to much lower LCOH
   loan_period: 0 # H2FAST default, not used for revolving debt
   cash_onhand_months: 1 # H2FAST default
   administrative_expense_percent_of_sales: 0.00 # percent of sales H2FAST default
   depreciation_method: "MACRS" # can be "MACRS" or "Straight line" - MACRS may be better and can reduce LCOH by more than $1/kg and is spec'd in the IRS MACRS schedule https://www.irs.gov/publications/p946#en_US_2020_publink1000107507
-  depreciation_period: 7 # years - as specified by the IRS MACRS schedule https://www.irs.gov/publications/p946#en_US_2020_publink1000107507
+  depreciation_period: 5 # years - as specified by the IRS MACRS schedule for wind and solar https://www.irs.gov/publications/p946#en_US_2020_publink1000107507
   depreciation_period_electrolyzer: 7 # based on PEM Electrolysis H2A Production Case Study Documentation estimate of 7 years. also see https://www.irs.gov/publications/p946#en_US_2020_publink1000107507
   discount_years:
     wind: 2020 # Updated for GS
