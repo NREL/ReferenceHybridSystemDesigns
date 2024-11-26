@@ -66,6 +66,7 @@ def get_filename_from_partial_name(directory: str, search_string: str):
     
     return False
 
+<<<<<<< HEAD
 # def get_state_from_lat_long(latitude, longitude):
 #     """From ChatGPT
 
@@ -85,6 +86,8 @@ def get_filename_from_partial_name(directory: str, search_string: str):
 #         return state
 #     else:
 #         return "State not found"
+=======
+>>>>>>> main
     
 def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
     ref_sys_path = "../reference-systems/"
@@ -125,7 +128,7 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
         # get QOIs
         qoi = {}
         qoi["ID"] = design
-        qoi["State"] = states[design] #get_state_from_lat_long(latitude=lat, longitude=lon)
+        qoi["State"] = states[design]
         qoi["Area"] = regions[design]
         qoi["Product"] = products[design]
         qoi["On/Offshore"] = greenheart_input["plant_design"][f"scenario{int(design)}"]["wind_location"].capitalize()

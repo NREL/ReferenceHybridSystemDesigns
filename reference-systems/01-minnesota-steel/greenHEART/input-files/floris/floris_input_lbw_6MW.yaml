@@ -1,6 +1,6 @@
 name: Gauss
 description: Three turbines using Gauss model
-floris_version: v3.0.0
+floris_version: v4.0.0
 logging:
   console:
     enable: false
