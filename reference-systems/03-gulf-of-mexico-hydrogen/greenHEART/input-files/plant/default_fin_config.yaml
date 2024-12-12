@@ -26,7 +26,7 @@ financial_parameters:
   debt_percent: 73.4 # 2024 ATB uses 73.4% debt for offshore fixed-bottom wind
   term_int_rate: 7.0 # nominal interest rate based on 2024 ATB for fixed-bottom offshore wind
   months_working_reserve: 1
-  analysis_start_year: 2025
+  analysis_start_year: 2030
   installation_months: 12
   sales_tax_rate_state: 8.20 # average combined state and local sales tax in TX https://taxfoundation.org/location/texas/
   admin_expense_percent_of_sales: 0.0 # H2FAST default
