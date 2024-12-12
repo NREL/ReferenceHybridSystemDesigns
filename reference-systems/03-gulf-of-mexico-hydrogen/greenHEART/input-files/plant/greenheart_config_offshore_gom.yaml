@@ -22,7 +22,7 @@ finance_parameters:
   property_insurance: 0.03 # percent of CAPEX higher insurance due to being in a hurricane-prone area https://www.nrel.gov/docs/fy24osti/88195.pdf
   total_income_tax_rate: 0.2175 # 0.257 tax rate in 2022 atb baseline workbook, the value used here is based on federal corporate income tax and the TX franchise tax. The TX franchise tax should be applied to margin but is included in income tax here as an approximation
   capital_gains_tax_rate: 0.15 # H2FAST default
-  sales_tax_rate: 8.20 # average combined state and local sales tax in TX https://taxfoundation.org/location/texas/
+  sales_tax_rate: 0.082 # average combined state and local sales tax in TX https://taxfoundation.org/location/texas/
   debt_interest_rate: 0.07 # nominal interest rate based on 2024 ATB for fixed-bottom offshore wind
   debt_type: "Revolving debt" # can be "Revolving debt" or "One time loan". Revolving debt is H2FAST default and leads to much lower LCOH
   loan_period: 0 # H2FAST default, not used for revolving debt
