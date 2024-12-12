@@ -21,7 +21,7 @@ financial_parameters:
   real_discount_rate: 0.063 # nominal return based on 2024 ATB baseline workbook - with 0% inflation, real and nominal rates are equal
   federal_tax_rate: 21.0 # https://taxsummaries.pwc.com/quick-charts/corporate-income-tax-cit-rates
   state_tax_rate: 9.8 # https://taxfoundation.org/data/all/state/state-corporate-income-tax-rates-brackets-2024/
-  property_tax_rate: 1.18
+  property_tax_rate: 2.0 # https://www.house.mn.gov/hrd/issinfo/clsrates.aspx
   insurance_rate: 0.5
   debt_percent: 72.4 # based on 2024 ATB
   term_int_rate: 4.4 # based on 2024 ATB

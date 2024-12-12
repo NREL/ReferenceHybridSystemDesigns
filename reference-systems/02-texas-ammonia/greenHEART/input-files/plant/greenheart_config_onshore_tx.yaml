@@ -20,7 +20,7 @@ finance_parameters:
   discount_rate: 0.063 # nominal return based on 2024 ATB baseline workbook
   debt_equity_split: False # 2022 ATB uses 68.5% debt
   debt_equity_ratio: 2.62
-  property_tax: 0.0147  # percent of CAPEX # combined with property insurance then between H2A and H2FAST defaults
+  property_tax: 0.0147 # average effective real property tax rate in Texas https://taxfoundation.org/data/all/state/property-taxes-by-state-county-2024/
   property_insurance: 0.005 # percent of CAPEX # combined with property tax then between H2A and H2FAST defaults
   total_income_tax_rate: 0.2175 # 0.257 tax rate in 2022 atb baseline workbook, the value used here is based on federal corporate income tax and the TX franchise tax which should be applied to margin but is included in income tax here as an approximation
   capital_gains_tax_rate: 0.15 # H2FAST default
