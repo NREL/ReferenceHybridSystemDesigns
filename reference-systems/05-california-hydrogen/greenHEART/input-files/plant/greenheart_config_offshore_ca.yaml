@@ -22,7 +22,7 @@ finance_parameters:
   property_insurance: 0.005 # percent of CAPEX # combined with property tax then between H2A and H2FAST defaults
   total_income_tax_rate: 0.2984 # 0.257 tax rate in 2022 atb baseline workbook. Value here based on federal (21%) and state (8.84%) income tax
   capital_gains_tax_rate: 0.15 # H2FAST default
-  sales_tax_rate: 0.085 # average combined state and local sales tax in Arcata, CA
+  sales_tax_rate: 0.085 # combined state and local sales tax in Arcata, CA https://www.cityofarcata.org/438/Sales-Use-Tax
   debt_interest_rate: 0.044
   debt_type: "Revolving debt" # can be "Revolving debt" or "One time loan". Revolving debt is H2FAST default and leads to much lower LCOH
   loan_period: 0 # H2FAST default, not used for revolving debt

@@ -28,7 +28,7 @@ financial_parameters:
   months_working_reserve: 1
   analysis_start_year: 2025
   installation_months: 36
-  sales_tax_rate_state: 7.375 # https://taxmaps.state.mn.us/salestax/
+  sales_tax_rate_state: 7.375 # total state and local sales tax in St. Louis County https://taxmaps.state.mn.us/salestax/
   admin_expense_percent_of_sales: 0.0 # H2FAST default
   capital_gains_tax_rate: 15.0 # H2FAST default
   debt_type: "Revolving debt" # H2FAST default

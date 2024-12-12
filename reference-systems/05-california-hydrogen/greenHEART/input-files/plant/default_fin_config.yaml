@@ -28,7 +28,7 @@ financial_parameters:
   months_working_reserve: 1
   analysis_start_year: 2025
   installation_months: 12
-  sales_tax_rate_state: 8.50 # average combined state and local sales tax in Arcata, CA
+  sales_tax_rate_state: 8.50 # combined state and local sales tax in Arcata, CA https://www.cityofarcata.org/438/Sales-Use-Tax
   admin_expense_percent_of_sales: 0.0 # H2FAST default
   capital_gains_tax_rate: 15.0 # H2FAST default
   debt_type: "Revolving debt" # H2FAST default
