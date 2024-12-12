@@ -20,7 +20,7 @@ finance_parameters:
   debt_equity_ratio: 2.62
   property_tax: 0.0226  # percent of CAPEX # combined with property insurance then between H2A and H2FAST defaults
   property_insurance: 0.005 # percent of CAPEX # combined with property tax then between H2A and H2FAST defaults
-  total_income_tax_rate: 0.30 # combined federal (21%) and state (9%) income tax rates
+  total_income_tax_rate: 0.2825 # combined federal (21%) and state (7.25%) income tax rates
   capital_gains_tax_rate: 0.15 # H2FAST default
   sales_tax_rate: 0.082 # average combined state and local sales tax in NJ
   debt_interest_rate: 0.05

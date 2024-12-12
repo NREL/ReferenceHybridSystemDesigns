@@ -19,9 +19,9 @@ system_use_lifetime_output: 0
 financial_parameters:
   inflation_rate: 0.0 # nominal basis
   real_discount_rate: 0.063 # nominal return based on 2024 ATB baseline workbook. Nominal and real rates are equal with 0% inflation
-  federal_tax_rate: 21.0 
-  state_tax_rate: 0.0
-  property_tax_rate: 1.47
+  federal_tax_rate: 21.0 # https://taxsummaries.pwc.com/quick-charts/corporate-income-tax-cit-rates
+  state_tax_rate: 0.75 # https://comptroller.texas.gov/taxes/franchise/ --> The TX franchise tax should be applied to margin but is included in income tax here as an approximation
+  property_tax_rate: 1.47 # 
   insurance_rate: 0.5
   debt_percent: 72.4 # based on 2024 ATB
   term_int_rate: 4.4 # based on 2024 ATB

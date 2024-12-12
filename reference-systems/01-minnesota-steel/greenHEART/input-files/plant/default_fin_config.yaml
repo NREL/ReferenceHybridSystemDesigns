@@ -19,8 +19,8 @@ system_use_lifetime_output: 0
 financial_parameters:
   inflation_rate: 0.0 # nominal basis
   real_discount_rate: 0.063 # nominal return based on 2024 ATB baseline workbook - with 0% inflation, real and nominal rates are equal
-  federal_tax_rate: 21.0 
-  state_tax_rate: 9.8
+  federal_tax_rate: 21.0 # https://taxsummaries.pwc.com/quick-charts/corporate-income-tax-cit-rates
+  state_tax_rate: 9.8 # https://taxfoundation.org/data/all/state/state-corporate-income-tax-rates-brackets-2024/
   property_tax_rate: 1.18
   insurance_rate: 0.5
   debt_percent: 72.4 # based on 2024 ATB
@@ -28,7 +28,7 @@ financial_parameters:
   months_working_reserve: 1
   analysis_start_year: 2025
   installation_months: 36
-  sales_tax_rate_state: 8.04 # average combined state and local sales tax in MN
+  sales_tax_rate_state: 7.375 # https://taxmaps.state.mn.us/salestax/
   admin_expense_percent_of_sales: 0.0 # H2FAST default
   capital_gains_tax_rate: 15.0 # H2FAST default
   debt_type: "Revolving debt" # H2FAST default
