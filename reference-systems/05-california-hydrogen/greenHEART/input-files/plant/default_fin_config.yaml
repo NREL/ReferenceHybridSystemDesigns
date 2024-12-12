@@ -18,7 +18,7 @@ system_costs:
 system_use_lifetime_output: 0
 financial_parameters:
   inflation_rate: 0.0 # nominal basis
-  real_discount_rate: 0.063 # nominal return based on 2024 ATB basline workbook
+  real_discount_rate: 0.105 # nominal return based on 2024 ATB baseline workbook for floating offshore wind
   federal_tax_rate: 21.0 # https://taxsummaries.pwc.com/quick-charts/corporate-income-tax-cit-rates
   state_tax_rate: 8.84 # https://taxfoundation.org/data/all/state/state-corporate-income-tax-rates-brackets-2024/
   property_tax_rate: 0.68 # average effective real property tax rate in California https://taxfoundation.org/data/all/state/property-taxes-by-state-county-2024/
