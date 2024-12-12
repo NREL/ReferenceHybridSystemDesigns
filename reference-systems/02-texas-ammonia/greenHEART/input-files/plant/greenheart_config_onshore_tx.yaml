@@ -24,8 +24,8 @@ finance_parameters:
   property_insurance: 0.005 # percent of CAPEX # combined with property tax then between H2A and H2FAST defaults
   total_income_tax_rate: 0.2175 # 0.257 tax rate in 2022 atb baseline workbook, the value used here is based on federal corporate income tax and the TX franchise tax which should be applied to margin but is included in income tax here as an approximation
   capital_gains_tax_rate: 0.15 # H2FAST default
-  sales_tax_rate: 0.082 
-  debt_interest_rate: 0.046
+  sales_tax_rate: 0.082 # average combined state and local sales tax https://taxfoundation.org/location/texas/
+  debt_interest_rate: 0.07 # based on 2024 ATB nominal interest rate for land-based onshore wind
   debt_type: "Revolving debt" # can be "Revolving debt" or "One time loan". Revolving debt is H2FAST default and leads to much lower LCOH
   loan_period: 0 # H2FAST default, not used for revolving debt
   cash_onhand_months: 1 # H2FAST default
