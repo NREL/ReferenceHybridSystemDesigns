@@ -34,9 +34,9 @@ finance_parameters:
   discount_years:
     wind: 2022 # based on turbine capex value provided to ORBIT from 2022 ATB
     wind_and_electrical: 2022 # for ORBIT opex
-    wave: 2020 # confirmed by Kaitlin Brunik 20240103
-    solar: 2020 # Updated for GS
-    battery: 2020 # Updated for GS
+    wave: 2020
+    solar: 2022 # Updated for GS
+    battery: 2022 # Updated for GS
     platform: 2022 # TODO ask Nick and Charlie
     electrical_export_system: 2022 # also from ORBIT, so match wind assumptions. TODO ask Sophie Bradenkamp
     desal: 2013 # from code citation: https://www.nrel.gov/docs/fy16osti/66073.pdf
@@ -65,7 +65,7 @@ electrolyzer:
   uptime_hours_until_eol: 77600 #number of 'on' hours until electrolyzer reaches eol
   include_degradation_penalty: True #include degradation
   turndown_ratio: 0.1 #turndown_ratio = minimum_cluster_power/cluster_rating_MW
-  electrolyzer_capex: 1600 # $/kW 
+  electrolyzer_capex: 2000 # $/kW overnight installed capital costs for a 1 MW system in 2022 USD/kW (DOE hydrogen program record 24005	Clean Hydrogen Production Cost Scenarios with PEM Electrolyzer Technology 05/20/24) (https://www.hydrogen.energy.gov/docs/hydrogenprogramlibraries/pdfs/24005-clean-hydrogen-production-cost-pem-electrolyzer.pdf?sfvrsn=8cb10889_1) 
   replacement_cost_percent: 0.15 # percent of capex - H2A default case
   cost_model: "singlitico2021" # "basic" is a basic cost model based on H2a and HFTO program record for PEM electrolysis. "singlitico2021" uses cost estimates from that paper
 h2_transport_compressor:
