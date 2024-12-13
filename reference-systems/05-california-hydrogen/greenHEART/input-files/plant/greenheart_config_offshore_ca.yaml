@@ -40,7 +40,7 @@ finance_parameters:
     platform: 2022 # TODO ask Nick and Charlie
     electrical_export_system: 2022 # also from ORBIT, so match wind assumptions. TODO ask Sophie Bradenkamp
     desal: 2013 # from code citation: https://www.nrel.gov/docs/fy16osti/66073.pdf
-    electrolyzer: 2020 # 2020 for singlitico2021, 2016 # for simple h2 cost model in hopp (see https://www.hydrogen.energy.gov/pdfs/19009_h2_production_cost_pem_electrolysis_2019.pdf) ## 2020 # based on IRENA report https://www.irena.org/-/media/Files/IRENA/Agency/Publication/2020/Dec/IRENA_Green_hydrogen_cost_2020.pdf
+    electrolyzer: 2022 # for values used in hybrid system reference designs
     h2_transport_compressor: 2016 # listed in code header
     h2_storage:
       pressure_vessel: 2022 # based on readme for Compressed_gas_function
