@@ -150,10 +150,10 @@ steel:
     feedstocks:
       oxygen_market_price: 0.0 # 0.03 $/kgO2 if `o2_heat_integration` == 1
       excess_oxygen: 395
-      lime_unitcost: 122.1
-      carbon_unitcost: 236.97
+      lime_unitcost: 108
+      carbon_unitcost: 205
       electricity_cost: 48.92
-      iron_ore_pellet_unitcost: 207.35
+      iron_ore_pellet_unitcost: 224
       oxygen_market_price: 0.03
       raw_water_unitcost: 0.59289
       iron_ore_consumption: 1.62927
@@ -163,9 +163,9 @@ steel:
       hydrogen_consumption: 0.06596
       natural_gas_consumption: 0.71657
       electricity_consumption: 0.5502
-      slag_disposal_unitcost: 37.63
+      slag_disposal_unitcost: 41
       slag_production: 0.17433
-      maintenance_materials_unitcost: 7.72
+      maintenance_materials_unitcost: 8.34
       natural_gas_prices:
         "2035": 3.76232
         "2036": 3.776032
