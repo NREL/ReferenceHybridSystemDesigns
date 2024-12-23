@@ -150,9 +150,9 @@ steel:
     feedstocks:
       oxygen_market_price: 0.0 # 0.03 $/kgO2 if `o2_heat_integration` == 1
       excess_oxygen: 395
-      lime_unitcost: 155.72 #2022 USD/kg lime
+      lime_unitcost: 108 #2022 USD/kg lime
       lime_transport_cost: 47.72 # 2022 USD/kg lime
-      carbon_unitcost: 236.97 # 2022 USD/kg carbon
+      carbon_unitcost: 205 # 2022 USD/kg carbon
       carbon_transport_cost: 64.91 # 2022 USD/kg carbon
       electricity_cost: 101 # 2022 USD - not actually used in cost/finance model
       iron_ore_pellet_unitcost: 224.63 # 2022 USD/kg iron
