@@ -145,15 +145,18 @@ steel:
   capacity:
     input_capacity_factor_estimate: 0.9
   costs:
-    operational_year: 2035
+    operational_year: 2030
     o2_heat_integration: false
     feedstocks:
       oxygen_market_price: 0.0 # 0.03 $/kgO2 if `o2_heat_integration` == 1
       excess_oxygen: 395
-      lime_unitcost: 155.72 #2022 USD
-      carbon_unitcost: 236.97269.91 #2022 USD
+      lime_unitcost: 155.72 #2022 USD/kg lime
+      lime_transport_cost: 47.72 # 2022 USD/kg lime
+      carbon_unitcost: 236.97 # 2022 USD/kg carbon
+      carbon_transport_cost: 64.91 # 2022 USD/kg carbon
       electricity_cost: 101 # 2022 USD - not actually used in cost/finance model
-      iron_ore_pellet_unitcost: 224.63 # 2022 USD 
+      iron_ore_pellet_unitcost: 224.63 # 2022 USD/kg iron
+      iron_ore_pellet_transport_cost: 0.63 # 2022 USD/kg iron
       oxygen_market_price: 0.03
       raw_water_unitcost: 0.64036495572 # GS code
       iron_ore_consumption: 1.62927
