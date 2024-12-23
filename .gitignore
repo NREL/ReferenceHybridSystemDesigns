@@ -5,3 +5,5 @@ speed_dir
 post-process.py
 */images/*
 */log/*
+*.png
+*.log
