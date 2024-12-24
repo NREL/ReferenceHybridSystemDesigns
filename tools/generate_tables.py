@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from hopp.utilities import load_yaml
 import yaml
-from hopp.simulation.technologies.resource import SolarResource, WindResource
 from hopp.simulation.technologies.sites import SiteInfo
 import os 
 # from geopy.geocoders import Nominatim
@@ -89,14 +88,20 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
         print(f"Design: {design_name}")
         # load input files
         greenheart_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "greenheart"))
+        print("    GreenHEART input loaded")
         hopp_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "hopp"))
+        print("    HOPP input loaded")
         if get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "orbit"):
             orbit_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "orbit"), loader=CombinedLoader)
+            print("    ORBIT input loaded")
         else:
             orbit_input = False
+            print("    ORBIT input skipped")
+        
         ghout_path = get_filename_from_partial_name(ref_sys_path+design_name+"/"+output_files_path, "greenheart_output")
-        with open(ghout_path) as f:
+        with open(ghout_path, mode="r") as f:
             greenheart_output = yaml.full_load(f)
+        print("    GreenHEART output loaded")
 
         # get lat lon
         lat = hopp_input["site"]["data"]["lat"]
@@ -206,6 +211,77 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
 
     return 0
 
+def financial_inputs_table(designs_to_compare=["01", "02", "03", "04", "05"]):
+    ref_sys_path = "../reference-systems/"
+    plant_files_path = "greenHEART/input-files/plant/"
+    output_files_path = "greenHEART/output/data/"
+
+    # get all reference design names
+    reference_design_names = os.listdir(ref_sys_path)
+
+    # define region/area
+    regions = {"01": "", "02": "", "03": "Gulf Coast", "04": "New York Bight", "05": ""}
+    products = {"01": "Steel", "02": "Ammonia", "03": "Hydrogen", "04": "Hydrogen", "05": "Hydrogen"}
+    foundation_type = {"01": "", "02": "", "03": "Fixed", "04": "Fixed", "05": "Floating"}
+    storage_keys = {"lined_rock_cavern": "Rock cavern", "salt_cavern": "Salt cavern", "none": "None", "pipe": "Underground pipes", "turbine": "In-turbine", "pressure_vessel": "Pressure vessel"}
+    states = {"01": "Minnesota", "02": "Texas", "03": "Texas", "04": "New Jersey", "05": "California"}
+
+    qoi_dictionary_list = []
+    # loop over designs
+    for design in designs_to_compare:
+        # get full design name
+        design_name = [s for s in reference_design_names if design in s][0]
+        print(f"Design: {design_name}")
+        # load input files
+        greenheart_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "greenheart"))
+        print("    GreenHEART input loaded")
+        hopp_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "hopp"))
+        print("    HOPP input loaded")
+        financial_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "fin"))
+        print("    Financial input loaded")
+        if get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "orbit"):
+            orbit_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "orbit"), loader=CombinedLoader)
+            print("    ORBIT input loaded")
+        else:
+            orbit_input = False
+            print("    ORBIT input skipped")
+
+        # get QOIs
+        qoi = {}
+        qoi["ID"] = design
+        qoi["State"] = states[design]
+        qoi["Area"] = regions[design]
+        qoi["Product"] = products[design]
+        qoi["Nominal rate of return"] = financial_input["financial_parameters"]["real_discount_rate"]
+        qoi["Federal income tax rate"] = financial_input["financial_parameters"]["federal_tax_rate"]
+        qoi["Capital gains tax rate"] = financial_input["financial_parameters"]["capital_gains_tax_rate"]
+        qoi["State income tax rate"] = financial_input["financial_parameters"]["state_tax_rate"]
+        qoi["Property tax rate"] = financial_input["financial_parameters"]["property_tax_rate"]
+        qoi["Sales tax rate"] = financial_input["financial_parameters"]["sales_tax_rate_state"]
+        qoi["Insurance rate"] = financial_input["financial_parameters"]["insurance_rate"]
+        qoi["Debt percentage"] = financial_input["financial_parameters"]["debt_percent"]
+        qoi["Debt interest rate"] = financial_input["financial_parameters"]["term_int_rate"]
+        qoi["Months working reserve"] = financial_input["financial_parameters"]["months_working_reserve"]
+        qoi["Debt type"] = financial_input["financial_parameters"]["debt_type"]
+        qoi["Depreciation method"] = financial_input["financial_parameters"]["depreciation_method"]
+        qoi["Depreciation period (clean energy)"] = financial_input["financial_parameters"]["depreciation_period"]
+        qoi["Depreciation period (other)"] = greenheart_input["finance_parameters"]["depreciation_period_electrolyzer"]
+
+        qoi_dictionary_list.append(qoi)
+    
+    # create dataframe
+    qoi_df = pd.DataFrame(qoi_dictionary_list)
+    qoi_df = qoi_df.set_index(keys=["ID"], drop=True)
+
+    general_format = "{:.4f}".format
+   
+    # print latex table
+    print(qoi_df.dtypes)
+    print(qoi_df.round(2))
+    print(qoi_df.fillna("N/A").T.to_latex(float_format=general_format))
+
+
 if __name__ == "__main__":
 
-    comparison_table()
+    # comparison_table()
+    financial_inputs_table()
