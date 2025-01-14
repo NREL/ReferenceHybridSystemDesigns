@@ -262,10 +262,10 @@ def financial_inputs_table(designs_to_compare=["01", "02", "03", "04", "05"]):
         qoi["Debt percentage"] = financial_input["financial_parameters"]["debt_percent"]
         qoi["Debt interest rate"] = financial_input["financial_parameters"]["term_int_rate"]
         qoi["Months working reserve"] = financial_input["financial_parameters"]["months_working_reserve"]
-        qoi["Debt type"] = financial_input["financial_parameters"]["debt_type"]
-        qoi["Depreciation method"] = financial_input["financial_parameters"]["depreciation_method"]
-        qoi["Depreciation period (clean energy)"] = financial_input["financial_parameters"]["depreciation_period"]
-        qoi["Depreciation period (other)"] = greenheart_input["finance_parameters"]["depreciation_period_electrolyzer"]
+        qoi["Debt type"] = "Revolving" #financial_input["financial_parameters"]["debt_type"]
+        qoi["Depr. method"] = financial_input["financial_parameters"]["depreciation_method"]
+        qoi["Depr. period (clean energy)"] = financial_input["financial_parameters"]["depreciation_period"]
+        qoi["Depr. period (other)"] = greenheart_input["finance_parameters"]["depreciation_period_electrolyzer"]
 
         qoi_dictionary_list.append(qoi)
     
@@ -273,7 +273,7 @@ def financial_inputs_table(designs_to_compare=["01", "02", "03", "04", "05"]):
     qoi_df = pd.DataFrame(qoi_dictionary_list)
     qoi_df = qoi_df.set_index(keys=["ID"], drop=True)
 
-    general_format = "{:.4f}".format
+    general_format = "{:.2f}".format
    
     # print latex table
     print(qoi_df.dtypes)
