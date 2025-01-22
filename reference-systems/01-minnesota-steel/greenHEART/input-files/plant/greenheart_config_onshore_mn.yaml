@@ -16,16 +16,31 @@ project_parameters:
   installation_time: 36 # months
 finance_parameters:
   costing_general_inflation: 0.025 # used to adjust modeled costs to cost_year
-  profast_general_inflation: 0.0 # 0 for nominal analysis
-  discount_rate: 0.09 # nominal return based on 2024 ATB basline workbook for land-based wind
-  debt_equity_split: False
-  debt_equity_ratio: 2.62 # 2024 ATB uses 72.4% debt for land-based wind
+  profast_general_inflation: 0.0 # 0 for real analysis
+  discount_rate: 
+    wind: 0.063 # real return based on 2024 ATB baseline workbook for land-based wind
+    solar: 0.059 # real return based on 2024 ATB baseline for utility-scale PV
+    battery: 0.066 # real return based on 2024 ATB baseline for utility-scale battery
+    electrolyzer: 0.102 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
+    h2_storage: 0.102 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
+  debt_equity_split: # percent debt
+    wind: 0.724 # 2024 ATB uses 72.4% debt for land-based wind
+    solar: 0.753 # 2024 ATB uses 75.3% debt for utilty-scale PV
+    battery: 0.754 # Based on 2024 ATB for utility-scale PV-plus battery
+    electrolyzer: 0.385 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
+    h2_storage: 0.385 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
+  debt_equity_ratio: False
   property_tax: 0.02 # https://www.house.mn.gov/hrd/issinfo/clsrates.aspx
   property_insurance: 0.01 # percent of CAPEX estimated based on https://www.nrel.gov/docs/fy25osti/91775.pdf
   total_income_tax_rate: 0.308 # 0.257 tax rate in 2024 atb baseline workbook, value here is based on federal (21%) and state in MN (9.8)
   capital_gains_tax_rate: 0.15 # H2FAST default
   sales_tax_rate: 0.07375 # total state and local sales tax in St. Louis County https://taxmaps.state.mn.us/salestax/
-  debt_interest_rate: 0.07 # based on 2024 ATB nominal interest rate for land-based wind
+  debt_interest_rate: 
+    wind: 0.044 # 2024 ATB real interest rate for land-based wind
+    solar: 0.044 # 2024 ATB real interest rate for utilty-scale PV
+    battery: 0.044 # 2024 ATB real interest rate for utilty-scale battery
+    electrolyzer: 0.044 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
+    h2_storage: 0.044 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
   debt_type: "Revolving debt" # can be "Revolving debt" or "One time loan". Revolving debt is H2FAST default and leads to much lower LCOH
   loan_period: 0 # H2FAST default, not used for revolving debt
   cash_onhand_months: 1 # H2FAST default
@@ -67,7 +82,7 @@ electrolyzer:
   uptime_hours_until_eol: 77600 #number of 'on' hours until electrolyzer reaches eol
   include_degradation_penalty: True #include degradation
   turndown_ratio: 0.1 #turndown_ratio = minimum_cluster_power/cluster_rating_MW
-  electrolyzer_capex: 2000 # $/kW overnight installed capital costs for a 1 MW system in 2022 USD/kW (DOE hydrogen program record 24005	Clean Hydrogen Production Cost Scenarios with PEM Electrolyzer Technology 05/20/24) (https://www.hydrogen.energy.gov/docs/hydrogenprogramlibraries/pdfs/24005-clean-hydrogen-production-cost-pem-electrolyzer.pdf?sfvrsn=8cb10889_1) 
+  electrolyzer_capex: 2000 # $/kW overnight installed capital costs for a 1 MW system in 2022 USD/kW (DOE hydrogen program record 24005 Clean Hydrogen Production Cost Scenarios with PEM Electrolyzer Technology 05/20/24) (https://www.hydrogen.energy.gov/docs/hydrogenprogramlibraries/pdfs/24005-clean-hydrogen-production-cost-pem-electrolyzer.pdf?sfvrsn=8cb10889_1) 
   replacement_cost_percent: 0.15 # percent of capex - H2A default case
   cost_model: "singlitico2021" # "basic" is a basic cost model based on H2a and HFTO program record for PEM electrolysis. "singlitico2021" uses cost estimates from that paper
 h2_transport_compressor:
@@ -170,36 +185,36 @@ steel:
       slag_production: 0.17433 # 2022 USD
       maintenance_materials_unitcost: 8.34 # 2022 USD
       natural_gas_prices:
-        "2030":	3.550978
-        "2031":	3.64287
-        "2032":	3.729118
-        "2033":	3.863692
-        "2034":	3.968392
-        "2035":	4.063583
-        "2036":	4.078393
-        "2037":	4.11822
-        "2038":	4.223948
-        "2039":	4.175323
-        "2040":	4.278972
-        "2041":	4.349604
-        "2042":	4.338836
-        "2043":	4.28955
-        "2044":	4.238549
-        "2045":	4.215838
-        "2046":	4.188734
-        "2047":	4.15333
-        "2048":	4.118717
-        "2049":	4.079817
-        "2050":	4.067735
-        "2051":	4.067735
-        "2052":	4.067735
-        "2053":	4.067735
-        "2054":	4.067735
-        "2055":	4.067735
-        "2056":	4.067735
-        "2057":	4.067735
-        "2058":	4.067735
-        "2059":	4.067735
+        "2030": 3.550978
+        "2031": 3.64287
+        "2032": 3.729118
+        "2033": 3.863692
+        "2034": 3.968392
+        "2035": 4.063583
+        "2036": 4.078393
+        "2037": 4.11822
+        "2038": 4.223948
+        "2039": 4.175323
+        "2040": 4.278972
+        "2041": 4.349604
+        "2042": 4.338836
+        "2043": 4.28955
+        "2044": 4.238549
+        "2045": 4.215838
+        "2046": 4.188734
+        "2047": 4.15333
+        "2048": 4.118717
+        "2049": 4.079817
+        "2050": 4.067735
+        "2051": 4.067735
+        "2052": 4.067735
+        "2053": 4.067735
+        "2054": 4.067735
+        "2055": 4.067735
+        "2056": 4.067735
+        "2057": 4.067735
+        "2058": 4.067735
+        "2059": 4.067735
   finances:
     plant_life: 30
     grid_prices:
