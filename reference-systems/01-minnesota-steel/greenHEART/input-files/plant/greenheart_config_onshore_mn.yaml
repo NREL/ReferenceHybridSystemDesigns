@@ -16,17 +16,19 @@ project_parameters:
   installation_time: 36 # months
 finance_parameters:
   costing_general_inflation: 0.025 # used to adjust modeled costs to cost_year
-  profast_general_inflation: 0.0 # 0 for nominal analysis
+  profast_general_inflation: 0.0 # 0 for real analysis
   discount_rate: 
     wind: 0.063 # real return based on 2024 ATB baseline workbook for land-based wind
     solar: 0.059 # real return based on 2024 ATB baseline for utility-scale PV
     battery: 0.066 # real return based on 2024 ATB baseline for utility-scale battery
-    electrolyzer: 10.2 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
-  debt_equity_split:
+    electrolyzer: 0.102 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
+    h2_storage: 0.102 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
+  debt_equity_split: # percent debt
     wind: 0.724 # 2024 ATB uses 72.4% debt for land-based wind
     solar: 0.753 # 2024 ATB uses 75.3% debt for utilty-scale PV
     battery: 0.754 # Based on 2024 ATB for utility-scale PV-plus battery
     electrolyzer: 0.385 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
+    h2_storage: 0.385 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
   debt_equity_ratio: False
   property_tax: 0.02 # https://www.house.mn.gov/hrd/issinfo/clsrates.aspx
   property_insurance: 0.01 # percent of CAPEX estimated based on https://www.nrel.gov/docs/fy25osti/91775.pdf
@@ -38,6 +40,7 @@ finance_parameters:
     solar: 0.044 # 2024 ATB real interest rate for utilty-scale PV
     battery: 0.044 # 2024 ATB real interest rate for utilty-scale battery
     electrolyzer: 0.044 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
+    h2_storage: 0.044 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
   debt_type: "Revolving debt" # can be "Revolving debt" or "One time loan". Revolving debt is H2FAST default and leads to much lower LCOH
   loan_period: 0 # H2FAST default, not used for revolving debt
   cash_onhand_months: 1 # H2FAST default
