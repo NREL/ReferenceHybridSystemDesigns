@@ -207,7 +207,7 @@ ammonia:
       "capital gains tax rate": 0.15
       "leverage after tax nominal discount rate": 0.10893
       "debt equity ratio of initial financing": 0.624788
-      "debt interest rate": 0.050049
+      "debt interest rate": 0.05
 
 opt_options:
   opt_flag: True

@@ -262,32 +262,56 @@ def financial_inputs_table(designs_to_compare=["01", "02", "03", "04", "05"]):
             orbit_input = False
             print("    ORBIT input skipped")
 
+        if "ammonia" in greenheart_input:
+            roe_ammonia = greenheart_input["ammonia"]["finances"]["financial_assumptions"]["leverage after tax nominal discount rate"]
+            debt_ratio_ammonia = greenheart_input["ammonia"]["finances"]["financial_assumptions"]["debt equity ratio of initial financing"]
+            debt_percent_ammonia = debt_ratio_ammonia/(debt_ratio_ammonia + 1.0)
+            debt_rate_steel_ammonia = greenheart_input["ammonia"]["finances"]["financial_assumptions"]["debt interest rate"]
+        else:
+            roe_ammonia = np.nan
+            debt_percent_ammonia = np.nan
+            debt_rate_steel_ammonia = np.nan
+
+        if "steel" in greenheart_input:
+            roe_steel = greenheart_input["steel"]["finances"]["financial_assumptions"]["leverage after tax nominal discount rate"]
+            debt_ratio_steel = greenheart_input["steel"]["finances"]["financial_assumptions"]["debt equity ratio of initial financing"]
+            debt_percent_steel = debt_ratio_steel/(debt_ratio_steel + 1.0)
+            debt_rate_steel_ammonia = greenheart_input["steel"]["finances"]["financial_assumptions"]["debt interest rate"]
+        else:
+            roe_steel = np.nan
+            debt_percent_steel = np.nan
+
         # get QOIs
         qoi = {}
         qoi["ID"] = design
         qoi["State"] = states[design]
         qoi["Area"] = regions[design]
         qoi["Product"] = products[design]
-        qoi["Real ROE wind"] = gh_financial_parameters["discount_rate"]["wind"]
-        qoi["Real ROE PV"] = gh_financial_parameters["discount_rate"]["solar"]
-        qoi["Real ROE battery"] = gh_financial_parameters["discount_rate"]["battery"]
-        qoi["Real ROE hydrogen"] = gh_financial_parameters["discount_rate"]["electrolyzer"]
-        qoi["Federal income tax rate"] = financial_input["financial_parameters"]["federal_tax_rate"]
-        qoi["Capital gains tax rate"] = financial_input["financial_parameters"]["capital_gains_tax_rate"]
-        qoi["State income tax rate"] = financial_input["financial_parameters"]["state_tax_rate"]
-        qoi["Property tax rate"] = financial_input["financial_parameters"]["property_tax_rate"]
-        qoi["Sales tax rate"] = financial_input["financial_parameters"]["sales_tax_rate_state"]
-        qoi["Insurance rate"] = financial_input["financial_parameters"]["insurance_rate"]
-        qoi["Debt percentage wind"] = financial_input["financial_parameters"]["debt_percent"]
-        qoi["Debt percentage PV"] = financial_input["financial_parameters"]["debt_percent"]
-        qoi["Debt percentage battery"] = financial_input["financial_parameters"]["debt_percent"]
-        qoi["Debt percentage hydrogen"] = financial_input["financial_parameters"]["debt_percent"]
-        qoi["Debt interest rate"] = financial_input["financial_parameters"]["term_int_rate"]
+        qoi["Real ROE wind (%)"] = gh_financial_parameters["discount_rate"]["wind"]*100
+        qoi["Real ROE PV (%)"] = gh_financial_parameters["discount_rate"]["solar"]*100
+        qoi["Real ROE battery (%)"] = gh_financial_parameters["discount_rate"]["battery"]*100
+        qoi["Real ROE hydrogen (%)"] = gh_financial_parameters["discount_rate"]["electrolyzer"]*100
+        qoi["Real ROE steel (%)"] = roe_steel*100
+        qoi["Real ROE ammonia (%)"] = roe_ammonia*100
+        qoi["Federal income tax rate (%)"] = financial_input["financial_parameters"]["federal_tax_rate"]
+        qoi["Capital gains tax rate (%)"] = financial_input["financial_parameters"]["capital_gains_tax_rate"]
+        qoi["State income tax rate (%)"] = financial_input["financial_parameters"]["state_tax_rate"]
+        qoi["Property tax rate (%)"] = financial_input["financial_parameters"]["property_tax_rate"]
+        qoi["Sales tax rate (%)"] = financial_input["financial_parameters"]["sales_tax_rate_state"]
+        qoi["Insurance rate (%)"] = financial_input["financial_parameters"]["insurance_rate"]
+        qoi["Debt percentage wind (%)"] = gh_financial_parameters["debt_equity_split"]["wind"]*100
+        qoi["Debt percentage PV (%)"] = gh_financial_parameters["debt_equity_split"]["solar"]*100
+        qoi["Debt percentage battery (%)"] = gh_financial_parameters["debt_equity_split"]["battery"]*100
+        qoi["Debt percentage hydrogen (%)"] = gh_financial_parameters["debt_equity_split"]["electrolyzer"]*100
+        qoi["Debt percentage steel (%)"] = debt_percent_steel*100
+        qoi["Debt percentage ammonia (%)"] = debt_percent_ammonia*100
+        qoi["Debt interest rate (%)"] = financial_input["financial_parameters"]["term_int_rate"]
+        qoi["Debt interest rate steel/ammonia (%)"] = debt_rate_steel_ammonia*100
         qoi["Months working reserve"] = financial_input["financial_parameters"]["months_working_reserve"]
         qoi["Debt type"] = "Revolving" #financial_input["financial_parameters"]["debt_type"]
         qoi["Depr. method"] = financial_input["financial_parameters"]["depreciation_method"]
-        qoi["Depr. period (clean energy)"] = financial_input["financial_parameters"]["depreciation_period"]
-        qoi["Depr. period (hydrogen)"] = greenheart_input["finance_parameters"]["depreciation_period_electrolyzer"]
+        qoi["Depr. period (clean energy) (years)"] = financial_input["financial_parameters"]["depreciation_period"]
+        qoi["Depr. period (hydrogen) (years)"] = greenheart_input["finance_parameters"]["depreciation_period_electrolyzer"]
 
         qoi_dictionary_list.append(qoi)
     
@@ -299,12 +323,18 @@ def financial_inputs_table(designs_to_compare=["01", "02", "03", "04", "05"]):
     qoi_df.style.format(thousands=",")
     
     
-    qoi_df = qoi_df.fillna("N/A").T
-    qoi_df = qoi_df.style.format()
-    # print latex table
-    print(qoi_df.dtypes)
-    print(qoi_df.round(2))
-    print(qoi_df.to_latex())
+    # qoi_df = qoi_df.fillna("N/A").T
+
+    general_format = "{:,.2f}".format
+
+    for column in qoi_df.columns:
+        if isinstance(qoi_df[column].min(), float):
+            if (qoi_df[column].min() > 99): 
+                qoi_df[column] = qoi_df[column].round(decimals=0)
+            else:
+                qoi_df[column] = qoi_df[column].round(decimals=2)
+
+    print(qoi_df.fillna(" ").T.to_latex(float_format=general_format))
 
 
 if __name__ == "__main__":
