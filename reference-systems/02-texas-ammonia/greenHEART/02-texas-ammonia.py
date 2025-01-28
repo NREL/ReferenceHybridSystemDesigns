@@ -24,6 +24,7 @@ if __name__ == "__main__":
         incentive_option=1,
         plant_design_scenario=2,
         output_level=8,
+        save_greenheart_output=True,
     )
 
     # for analysis
