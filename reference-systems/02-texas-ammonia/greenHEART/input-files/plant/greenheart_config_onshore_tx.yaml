@@ -148,8 +148,8 @@ ammonia:
     feedstocks:
       electricity_cost: 91 # 2022 USD - not actually used in cost/finance model
       # hydrogen_cost: 4.023963541079105
-      cooling_water_cost: 0.00516275276753 # GS code
-      iron_based_catalyst_cost: 25 #2022 USD
+      cooling_water_cost: 0.00516275276753 # # 2022 USD/gal
+      iron_based_catalyst_cost: 25 #2022 USD/kg
       oxygen_cost: 0
   finances:
     plant_life: 30
