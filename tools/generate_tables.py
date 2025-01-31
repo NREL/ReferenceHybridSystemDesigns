@@ -125,7 +125,7 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
         qoi["Solar PV rating (MW)"] = hopp_input["technologies"]["pv"]["system_capacity_kw"]*1E-3
         qoi["Total generation rating (MW)"] = qoi["Wind farm rating (MW)"] + qoi["Solar PV rating (MW)"]
         qoi["Battery power rating (MW)"] = hopp_input["technologies"]["battery"]["system_capacity_kw"]*1E-3
-        qoi["Battery power rating (MWh)"] = hopp_input["technologies"]["battery"]["system_capacity_kwh"]*1E-3
+        qoi["Battery energy rating (MWh)"] = hopp_input["technologies"]["battery"]["system_capacity_kwh"]*1E-3
         # import pdb; pdb.set_trace()
         qoi["Hydrogen storage capacity (kt)"] = greenheart_output["h2_storage_capacity_kg"]*1E-6
         qoi["Hydrogen storage max fill rate (t/h)"] = greenheart_output["h2_storage_max_fill_rate_kg_hr"]*1E-3
@@ -148,8 +148,8 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
             qoi["Offshore latitude"] = str(latlon_format(float(lat)))
             qoi["Offshore longitude"] = str(latlon_format(float(lon)))
         else:
-            qoi["Offshore latitude"] = "N/A"
-            qoi["Offshore longitude"] = "N/A"
+            qoi["Offshore latitude"] = " "
+            qoi["Offshore longitude"] = " "
 
         if orbit_input:
             qoi["Distance from shore (km)"] = orbit_input["site"]["distance_to_landfall"]
@@ -170,26 +170,26 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
         qoi["Average wind speed (m/s)"] = np.average(wind_speed)
 
         if "steel_capacity" in greenheart_output.keys() and greenheart_output["steel_capacity"] is not None:
-            qoi["Steel Capacity (Mt/yr)"] = greenheart_output["steel_capacity"]["steel_plant_capacity_mtpy"]*1E-6
+            qoi["Steel capacity (Mt/yr)"] = greenheart_output["steel_capacity"]["steel_plant_capacity_mtpy"]*1E-6
         else:
-            qoi["Steel Capacity (Mt/yr)"] = None
+            qoi["Steel capacity (Mt/yr)"] = None
         
         if "ammonia_capacity" in greenheart_output.keys() and greenheart_output["ammonia_capacity"] is not None:
-            qoi["Ammonia Capacity (kt/yr)"] = greenheart_output["ammonia_capacity"]["ammonia_plant_capacity_kgpy"]*1E-6
+            qoi["Ammonia capacity (kt/yr)"] = greenheart_output["ammonia_capacity"]["ammonia_plant_capacity_kgpy"]*1E-6
         else:
-            qoi["Ammonia Capacity (kt/yr)"] = None
+            qoi["Ammonia capacity (kt/yr)"] = None
 
-        qoi["LCOH (USD/kg)"] = greenheart_output["lcoh"]
+        qoi["LCOH (USD/kg-H$_2$)"] = greenheart_output["lcoh"]
 
         if "steel_finance" in greenheart_output.keys() and greenheart_output["steel_finance"] is not None:
-            qoi["LCOS (USD/t)"] = greenheart_output["steel_finance"]["sol"]["price"]
+            qoi["LCOS (USD/t steel)"] = greenheart_output["steel_finance"]["sol"]["price"]
         else:
-            qoi["LCOS (USD/t)"] = None
+            qoi["LCOS (USD/t steel)"] = None
         
         if "ammonia_finance" in greenheart_output.keys() and greenheart_output["ammonia_finance"] is not None:
-            qoi["LCOA (USD/kg)"] = greenheart_output["ammonia_finance"]["sol"]["price"]
+            qoi["LCOA (USD/kg-NH$_3$)"] = greenheart_output["ammonia_finance"]["sol"]["price"]
         else:
-            qoi["LCOA (USD/kg)"] = None
+            qoi["LCOA (USD/kg-NH$_3$)"] = None
 
         qoi_dictionary_list.append(qoi)
     
@@ -219,10 +219,20 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
             else:
                 qoi_df[column] = qoi_df[column].round(decimals=2)
 
-    # print latex table
-    print(qoi_df.dtypes)
-    print(qoi_df.round(2))
+    # make short version for executive summary
+    es_columns = ["State", "Area", "Product", "On/Offshore", "PEM electrolyzer rating (MW)", 
+                  "Wind farm rating (MW)", "Solar PV rating (MW)", "Total generation rating (MW)", 
+                  "Battery power rating (MW)", "Battery energy rating (MWh)", "Hydrogen storage capacity (kt)",
+                  "Steel capacity (Mt/yr)", "Ammonia capacity (kt/yr)", "LCOH (USD/kg-H$_2$)", 
+                  "LCOS (USD/t steel)", "LCOA (USD/kg-NH$_3$)"]
+    
+    qoi_es_df = qoi_df[es_columns]
+
+    # print full latex table
     print(qoi_df.fillna(" ").T.to_latex(float_format=general_format))
+
+    # print executive summary table
+    print(qoi_es_df.fillna(" ").T.to_latex(float_format=general_format))
 
     return 0
 
@@ -287,26 +297,26 @@ def financial_inputs_table(designs_to_compare=["01", "02", "03", "04", "05"]):
         qoi["State"] = states[design]
         qoi["Area"] = regions[design]
         qoi["Product"] = products[design]
-        qoi["Real ROE wind (%)"] = gh_financial_parameters["discount_rate"]["wind"]*100
-        qoi["Real ROE PV (%)"] = gh_financial_parameters["discount_rate"]["solar"]*100
-        qoi["Real ROE battery (%)"] = gh_financial_parameters["discount_rate"]["battery"]*100
-        qoi["Real ROE hydrogen (%)"] = gh_financial_parameters["discount_rate"]["electrolyzer"]*100
-        qoi["Real ROE steel (%)"] = roe_steel*100
-        qoi["Real ROE ammonia (%)"] = roe_ammonia*100
-        qoi["Federal income tax rate (%)"] = financial_input["financial_parameters"]["federal_tax_rate"]
-        qoi["Capital gains tax rate (%)"] = financial_input["financial_parameters"]["capital_gains_tax_rate"]
-        qoi["State income tax rate (%)"] = financial_input["financial_parameters"]["state_tax_rate"]
-        qoi["Property tax rate (%)"] = financial_input["financial_parameters"]["property_tax_rate"]
-        qoi["Sales tax rate (%)"] = financial_input["financial_parameters"]["sales_tax_rate_state"]
-        qoi["Insurance rate (%)"] = financial_input["financial_parameters"]["insurance_rate"]
-        qoi["Debt percentage wind (%)"] = gh_financial_parameters["debt_equity_split"]["wind"]*100
-        qoi["Debt percentage PV (%)"] = gh_financial_parameters["debt_equity_split"]["solar"]*100
-        qoi["Debt percentage battery (%)"] = gh_financial_parameters["debt_equity_split"]["battery"]*100
-        qoi["Debt percentage hydrogen (%)"] = gh_financial_parameters["debt_equity_split"]["electrolyzer"]*100
-        qoi["Debt percentage steel (%)"] = debt_percent_steel*100
-        qoi["Debt percentage ammonia (%)"] = debt_percent_ammonia*100
-        qoi["Debt interest rate (%)"] = financial_input["financial_parameters"]["term_int_rate"]
-        qoi["Debt interest rate steel/ammonia (%)"] = debt_rate_steel_ammonia*100
+        qoi["Real ROE wind (\%)"] = gh_financial_parameters["discount_rate"]["wind"]*100
+        qoi["Real ROE PV (\%)"] = gh_financial_parameters["discount_rate"]["solar"]*100
+        qoi["Real ROE battery (\%)"] = gh_financial_parameters["discount_rate"]["battery"]*100
+        qoi["Real ROE hydrogen (\%)"] = gh_financial_parameters["discount_rate"]["electrolyzer"]*100
+        qoi["Real ROE steel (\%)"] = roe_steel*100
+        qoi["Real ROE ammonia (\%)"] = roe_ammonia*100
+        qoi["Federal income tax rate (\%)"] = financial_input["financial_parameters"]["federal_tax_rate"]
+        qoi["Capital gains tax rate (\%)"] = financial_input["financial_parameters"]["capital_gains_tax_rate"]
+        qoi["State income tax rate (\%)"] = financial_input["financial_parameters"]["state_tax_rate"]
+        qoi["Property tax rate (\%)"] = financial_input["financial_parameters"]["property_tax_rate"]
+        qoi["Sales tax rate (\%)"] = financial_input["financial_parameters"]["sales_tax_rate_state"]
+        qoi["Insurance rate (\%)"] = financial_input["financial_parameters"]["insurance_rate"]
+        qoi["Debt percentage wind (\%)"] = gh_financial_parameters["debt_equity_split"]["wind"]*100
+        qoi["Debt percentage PV (\%)"] = gh_financial_parameters["debt_equity_split"]["solar"]*100
+        qoi["Debt percentage battery (\%)"] = gh_financial_parameters["debt_equity_split"]["battery"]*100
+        qoi["Debt percentage hydrogen (\%)"] = gh_financial_parameters["debt_equity_split"]["electrolyzer"]*100
+        qoi["Debt percentage steel (\%)"] = debt_percent_steel*100
+        qoi["Debt percentage ammonia (\%)"] = debt_percent_ammonia*100
+        qoi["Debt interest rate (\%)"] = financial_input["financial_parameters"]["term_int_rate"]
+        qoi["Debt interest rate steel/ammonia (\%)"] = debt_rate_steel_ammonia*100
         qoi["Months working reserve"] = financial_input["financial_parameters"]["months_working_reserve"]
         qoi["Debt type"] = "Revolving" #financial_input["financial_parameters"]["debt_type"]
         qoi["Depr. method"] = financial_input["financial_parameters"]["depreciation_method"]
@@ -321,9 +331,6 @@ def financial_inputs_table(designs_to_compare=["01", "02", "03", "04", "05"]):
 
     # general_format = "{:,.2f}".format
     qoi_df.style.format(thousands=",")
-    
-    
-    # qoi_df = qoi_df.fillna("N/A").T
 
     general_format = "{:,.2f}".format
 
@@ -339,5 +346,5 @@ def financial_inputs_table(designs_to_compare=["01", "02", "03", "04", "05"]):
 
 if __name__ == "__main__":
 
-    # comparison_table()
-    financial_inputs_table()
+    comparison_table()
+    # financial_inputs_table()
