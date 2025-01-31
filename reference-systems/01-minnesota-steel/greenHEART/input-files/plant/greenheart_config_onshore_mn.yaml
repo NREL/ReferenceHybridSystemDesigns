@@ -34,7 +34,7 @@ finance_parameters:
   property_insurance: 0.01 # percent of CAPEX estimated based on https://www.nrel.gov/docs/fy25osti/91775.pdf
   total_income_tax_rate: 0.308 # 0.257 tax rate in 2024 atb baseline workbook, value here is based on federal (21%) and state in MN (9.8)
   capital_gains_tax_rate: 0.15 # H2FAST default
-  sales_tax_rate: 0.0 #0.07375 # total state and local sales tax in St. Louis County https://taxmaps.state.mn.us/salestax/
+  sales_tax_rate: 0.07375 # total state and local sales tax in St. Louis County https://taxmaps.state.mn.us/salestax/
   debt_interest_rate: 
     wind: 0.044 # 2024 ATB real interest rate for land-based wind
     solar: 0.044 # 2024 ATB real interest rate for utilty-scale PV
