@@ -1,5 +1,5 @@
 # GreenHEART imports
-from greenheart.simulation.greenheart_simulation import GreenHeartSimulationConfig
+from greenheart.simulation.greenheart_simulation import GreenHeartSimulationConfig, run_simulation
 from greenheart.tools.optimization.gc_run_greenheart import run_greenheart
 
 # run the stuff
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     prob, config = run_greenheart(config, run_only=True)
 
     # for optimization
-    # prob, config = run_greenheart(config, run_only=False)
+    prob, config = run_greenheart(config, run_only=False)
     
     lcoe = prob.get_val("lcoe", units="USD/(MW*h)")
     lcoh = prob.get_val("lcoh", units="USD/kg")
@@ -39,3 +39,17 @@ if __name__ == "__main__":
     print("LCOE: ", lcoe, "[$/MWh]")
     print("LCOH: ", lcoh, "[$/kg]")
     print("LCOS: ", lcos, "[$/metric-tonne]")
+
+    # for more output results
+
+    # from greenheart.tools.profast_tools import make_price_breakdown
+    # from greenheart.tools.profast_tools import make_pf_config_from_profast
+    # import matplotlib.pyplot as plt
+
+    # gh_output = run_simulation(config)
+    # pf_config = make_pf_config_from_profast(gh_output.profast_lcoh)
+
+    # full_price_breakdown, lco_check = make_price_breakdown(gh_output.profast_lcoh.get_cost_breakdown(), pf_config)
+
+    # plot = plt.barh(*zip(*full_price_breakdown.items()))
+    # plt.savefig("./output/figures/lcoh_breakdown/lcoh_elenya.pdf")

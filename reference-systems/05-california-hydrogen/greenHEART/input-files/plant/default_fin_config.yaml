@@ -20,7 +20,7 @@ financial_parameters:
   inflation_rate: 0.0 # nominal basis
   real_discount_rate: 10.5 # nominal return based on 2024 ATB baseline workbook for floating offshore wind. With 0% inflation, real and nominal rates are equal
   federal_tax_rate: 21.0 # https://taxsummaries.pwc.com/quick-charts/corporate-income-tax-cit-rates
-  state_tax_rate: 8.84 # https://taxfoundation.org/data/all/state/state-corporate-income-tax-rates-brackets-2024/
+  state_tax_rate: 4.74 # 8.84 # https://taxfoundation.org/data/all/state/state-corporate-income-tax-rates-brackets-2024/
   property_tax_rate: 0.68 # average effective real property tax rate in California https://taxfoundation.org/data/all/state/property-taxes-by-state-county-2024/
   insurance_rate: 1.5 # https://www.nrel.gov/docs/fy24osti/88195.pdf
   debt_percent: 73.4 # based on 2024 ATB for floating offshore wind
@@ -28,7 +28,7 @@ financial_parameters:
   months_working_reserve: 1
   analysis_start_year: 2030
   installation_months: 12
-  sales_tax_rate_state: 8.50 # combined state and local sales tax in Arcata, CA https://www.cityofarcata.org/438/Sales-Use-Tax
+  sales_tax_rate_state: 0.0 # 8.50 # combined state and local sales tax in Arcata, CA https://www.cityofarcata.org/438/Sales-Use-Tax
   admin_expense_percent_of_sales: 0.0 # H2FAST default
   capital_gains_tax_rate: 15.0 # H2FAST default
   debt_type: "Revolving debt" # H2FAST default
