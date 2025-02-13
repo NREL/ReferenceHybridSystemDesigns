@@ -1,6 +1,7 @@
 # GreenHEART imports
 from greenheart.simulation.greenheart_simulation import GreenHeartSimulationConfig
 from greenheart.tools.optimization.gc_run_greenheart import run_greenheart
+from greenheart.tools.plot import plot_energy_flows, plot_hydrogen_flows
 
 # run the stuff
 if __name__ == "__main__":
@@ -40,3 +41,6 @@ if __name__ == "__main__":
     print("LCOE: ", lcoe, "[$/MWh]")
     print("LCOH: ", lcoh, "[$/kg]")
     print("LCOA: ", lcoa, "[$/kg]")
+
+    plot_energy_flows("./output/data/production/energy_flows.csv", show_fig=False)
+    plot_hydrogen_flows("./output/data/production/energy_flows.csv", show_fig=False)

@@ -347,4 +347,4 @@ def financial_inputs_table(designs_to_compare=["01", "02", "03", "04", "05"]):
 if __name__ == "__main__":
 
     comparison_table()
-    # financial_inputs_table()
+    financial_inputs_table()

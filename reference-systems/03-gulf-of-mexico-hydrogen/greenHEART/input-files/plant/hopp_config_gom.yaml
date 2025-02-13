@@ -30,6 +30,7 @@ technologies:
   wind:
     num_turbines: 58
     turbine_rating_kw: 17000.0
+    operational_losses: 10.49
     model_name: floris
     timestep: [0, 8760]
     floris_config: input_files/floris/floris_input_osw_17MW.yaml

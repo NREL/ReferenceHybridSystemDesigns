@@ -1,6 +1,7 @@
 # GreenHEART imports
 from greenheart.simulation.greenheart_simulation import GreenHeartSimulationConfig, run_simulation
 from greenheart.tools.optimization.gc_run_greenheart import run_greenheart
+from greenheart.tools.plot import plot_energy_flows, plot_hydrogen_flows
 
 # run the stuff
 if __name__ == "__main__":
@@ -29,8 +30,8 @@ if __name__ == "__main__":
     # for analysis
     prob, config = run_greenheart(config, run_only=True)
 
-    # for optimization
-    prob, config = run_greenheart(config, run_only=False)
+    # # for optimization
+    # prob, config = run_greenheart(config, run_only=False)
     
     lcoe = prob.get_val("lcoe", units="USD/(MW*h)")
     lcoh = prob.get_val("lcoh", units="USD/kg")
@@ -40,6 +41,8 @@ if __name__ == "__main__":
     print("LCOH: ", lcoh, "[$/kg]")
     print("LCOS: ", lcos, "[$/metric-tonne]")
 
+    plot_energy_flows("./output/data/production/energy_flows.csv", show_fig=False)
+    plot_hydrogen_flows("./output/data/production/energy_flows.csv", show_fig=False)
     # for more output results
 
     # from greenheart.tools.profast_tools import make_price_breakdown
