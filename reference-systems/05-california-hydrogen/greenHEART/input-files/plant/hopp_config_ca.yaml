@@ -52,14 +52,14 @@ technologies:
         om_replacement_cost_escal: 0
       system_use_lifetime_output: 0
       financial_parameters:
-        inflation_rate: 0.0 # nominal basis
-        real_discount_rate: 10.5 # nominal return based on 2024 ATB baseline workbook for floating offshore wind. With 0% inflation, real and nominal rates are equal
+        inflation_rate: 0.0 # real basis
+        real_discount_rate: 7.8 # real return based on 2024 ATB baseline workbook for floating offshore wind
         federal_tax_rate: 21.0 # https://taxsummaries.pwc.com/quick-charts/corporate-income-tax-cit-rates
         state_tax_rate: 4.74 # 8.84 # https://taxfoundation.org/data/all/state/state-corporate-income-tax-rates-brackets-2024/
         property_tax_rate: 0.68 # average effective real property tax rate in California https://taxfoundation.org/data/all/state/property-taxes-by-state-county-2024/
         insurance_rate: 1.5 # https://www.nrel.gov/docs/fy24osti/88195.pdf
         debt_percent: 73.4 # based on 2024 ATB for floating offshore wind
-        term_int_rate: 7.0 # based on 2024 ATB for floating offshore wind
+        term_int_rate: 4.4 # 2024 ATB real interest rate for floating offshore wind
         months_working_reserve: 1
         analysis_start_year: 2030
         installation_months: 12
@@ -96,13 +96,13 @@ technologies:
       system_use_lifetime_output: 0
       financial_parameters:
         inflation_rate: 0.0 # nominal basis
-        real_discount_rate: 10.5 # nominal return based on 2024 ATB baseline workbook for floating offshore wind. With 0% inflation, real and nominal rates are equal
+        real_discount_rate: 5.9 # real return based on 2024 ATB baseline for utility-scale PV
         federal_tax_rate: 21.0 # https://taxsummaries.pwc.com/quick-charts/corporate-income-tax-cit-rates
         state_tax_rate: 4.74 # 8.84 # https://taxfoundation.org/data/all/state/state-corporate-income-tax-rates-brackets-2024/
         property_tax_rate: 0.68 # average effective real property tax rate in California https://taxfoundation.org/data/all/state/property-taxes-by-state-county-2024/
         insurance_rate: 1.5 # https://www.nrel.gov/docs/fy24osti/88195.pdf
-        debt_percent: 73.4 # based on 2024 ATB for floating offshore wind
-        term_int_rate: 7.0 # based on 2024 ATB for floating offshore wind
+        debt_percent: 75.3 # 2024 ATB uses 75.3% debt for utilty-scale PV
+        term_int_rate: 4.4 # 2024 ATB real interest rate for utilty-scale PV
         months_working_reserve: 1
         analysis_start_year: 2030
         installation_months: 12
@@ -142,13 +142,13 @@ technologies:
       system_use_lifetime_output: 0
       financial_parameters:
         inflation_rate: 0.0 # nominal basis
-        real_discount_rate: 10.5 # nominal return based on 2024 ATB baseline workbook for floating offshore wind. With 0% inflation, real and nominal rates are equal
+        real_discount_rate: 6.6 # real return based on 2024 ATB baseline for utility-scale battery
         federal_tax_rate: 21.0 # https://taxsummaries.pwc.com/quick-charts/corporate-income-tax-cit-rates
         state_tax_rate: 4.74 # 8.84 # https://taxfoundation.org/data/all/state/state-corporate-income-tax-rates-brackets-2024/
         property_tax_rate: 0.68 # average effective real property tax rate in California https://taxfoundation.org/data/all/state/property-taxes-by-state-county-2024/
         insurance_rate: 1.5 # https://www.nrel.gov/docs/fy24osti/88195.pdf
-        debt_percent: 73.4 # based on 2024 ATB for floating offshore wind
-        term_int_rate: 7.0 # based on 2024 ATB for floating offshore wind
+        debt_percent: 75.4 # Based on 2024 ATB for utility-scale PV-plus battery
+        term_int_rate: 4.4 # 2024 ATB real interest rate for utilty-scale battery
         months_working_reserve: 1
         analysis_start_year: 2030
         installation_months: 12
@@ -184,13 +184,13 @@ technologies:
       system_use_lifetime_output: 0
       financial_parameters:
         inflation_rate: 0.0 # nominal basis
-        real_discount_rate: 10.5 # nominal return based on 2024 ATB baseline workbook for floating offshore wind. With 0% inflation, real and nominal rates are equal
+        real_discount_rate: 7.8 # real return based on 2024 ATB baseline workbook for floating offshore wind
         federal_tax_rate: 21.0 # https://taxsummaries.pwc.com/quick-charts/corporate-income-tax-cit-rates
         state_tax_rate: 4.74 # 8.84 # https://taxfoundation.org/data/all/state/state-corporate-income-tax-rates-brackets-2024/
         property_tax_rate: 0.68 # average effective real property tax rate in California https://taxfoundation.org/data/all/state/property-taxes-by-state-county-2024/
         insurance_rate: 1.5 # https://www.nrel.gov/docs/fy24osti/88195.pdf
         debt_percent: 73.4 # based on 2024 ATB for floating offshore wind
-        term_int_rate: 7.0 # based on 2024 ATB for floating offshore wind
+        term_int_rate: 4.4 # 2024 ATB real interest rate for floating offshore wind
         months_working_reserve: 1
         analysis_start_year: 2030
         installation_months: 12

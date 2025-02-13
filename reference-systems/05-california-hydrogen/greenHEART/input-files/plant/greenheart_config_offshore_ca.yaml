@@ -25,14 +25,14 @@ finance_parameters:
     electrolyzer: 0.102 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
     h2_storage: 0.102 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
   debt_equity_split: # percent debt
-    wind: 0.734 # 2024 ATB uses 72.4% debt for floating offshore wind
+    wind: 0.734 # 2024 ATB uses 73.4% debt for floating offshore wind
     electrical_export_system: 0.734 # 2024 ATB uses 73.4% debt for floating offshore wind
     solar: 0.753 # 2024 ATB uses 75.3% debt for utilty-scale PV
     battery: 0.754 # Based on 2024 ATB for utility-scale PV-plus battery
     electrolyzer: 0.385 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
     h2_storage: 0.385 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
   debt_interest_rate: 
-    wind: 0.044 # 2024 ATB real interest rate for fixed-bottom offshore wind
+    wind: 0.044 # 2024 ATB real interest rate for floating offshore wind
     electrical_export_system: 0.044 # 2024 ATB real interest rate for floating offshore wind
     solar: 0.044 # 2024 ATB real interest rate for utilty-scale PV
     battery: 0.044 # 2024 ATB real interest rate for utilty-scale battery
