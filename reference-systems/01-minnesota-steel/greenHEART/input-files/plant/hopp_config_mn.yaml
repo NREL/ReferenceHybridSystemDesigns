@@ -1,4 +1,4 @@
-site: #!include flatirons_site.yaml
+site:
   data:
     lat: 47.5
     lon: -93.0
@@ -35,7 +35,7 @@ technologies:
     model_name: floris
     timestep: [0, 8760]
     floris_config: input_files/floris/floris_input_lbw_6MW.yaml
-    fin_model: #!include default_fin_config_wind.yaml
+    fin_model:
       system_costs:
         om_fixed: [0]
         om_production: [0]
@@ -72,7 +72,7 @@ technologies:
   pv:
     system_capacity_kw: 800000 # was 1500000
     dc_degradation: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    fin_model: # !include default_fin_config_pv.yaml
+    fin_model:
       system_costs:
         om_fixed: [0]
         om_production: [0]
@@ -112,7 +112,7 @@ technologies:
     minimum_SOC: 20.0
     maximum_SOC: 100.0
     initial_SOC: 90.0
-    fin_model: # !include default_fin_config_battery.yaml
+    fin_model:
       system_costs:
         om_fixed: [0]
         om_production: [0]
@@ -148,7 +148,7 @@ technologies:
         ppa_escalation: 0 # %
   grid:
     interconnect_kw: 5000000 # Set higher than rated generation capacity to avoid curtailment in simulation
-    fin_model: #!include default_fin_config_grid.yaml
+    fin_model:
       system_costs:
         om_fixed: [0]
         om_production: [0]
