@@ -36,10 +36,8 @@ technologies:
     floris_config: input_files/floris/floris_input_osw_17MW.yaml
     fin_model: 
       battery_system:
-        batt_replacement_schedule_percent:
-          - 0
-        batt_bank_replacement:
-          - 0
+        batt_replacement_schedule_percent: [0]
+        batt_bank_replacement: [0]
         batt_replacement_option: 0
         batt_computed_bank_capacity: 0
         batt_meter_position: 0
@@ -81,10 +79,8 @@ technologies:
     dc_degradation: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     fin_model: 
       battery_system:
-        batt_replacement_schedule_percent:
-          - 0
-        batt_bank_replacement:
-          - 0
+        batt_replacement_schedule_percent: [0]
+        batt_bank_replacement: [0]
         batt_replacement_option: 0
         batt_computed_bank_capacity: 0
         batt_meter_position: 0
@@ -129,10 +125,8 @@ technologies:
     initial_SOC: 90.0
     fin_model: 
       battery_system:
-        batt_replacement_schedule_percent:
-          - 0
-        batt_bank_replacement:
-          - 0
+        batt_replacement_schedule_percent: [0]
+        batt_bank_replacement: [0]
         batt_replacement_option: 0
         batt_computed_bank_capacity: 0
         batt_meter_position: 0
@@ -173,10 +167,8 @@ technologies:
     interconnect_kw: 4000000 # Set higher than rated generation capacity
     fin_model: 
       battery_system:
-        batt_replacement_schedule_percent:
-          - 0
-        batt_bank_replacement:
-          - 0
+        batt_replacement_schedule_percent: [0]
+        batt_bank_replacement: [0]
         batt_replacement_option: 0
         batt_computed_bank_capacity: 0
         batt_meter_position: 0
