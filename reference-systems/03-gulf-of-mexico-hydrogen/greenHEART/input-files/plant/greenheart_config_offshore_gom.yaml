@@ -6,6 +6,8 @@ site:
     turbine_spacing: 7 # Also defined in ORBIT config for offshore layout. Greenheart config values override the values in ORBIT.
     grid_angle: 0 # wind layout grid angle in degrees where 0 is north, increasing clockwise
     row_phase_offset: 0 # wind layout offset of turbines along row from one row to the next
+lca_config: 
+  run_lca: False
 project_parameters:
   project_lifetime: 30
   grid_connection: False # option, can be turned on or off
@@ -14,16 +16,34 @@ project_parameters:
   cost_year: 2022
 finance_parameters:
   costing_general_inflation: 0.025 # used to adjust modeled costs to cost_year
-  profast_general_inflation: 0 # 0 for nominal analysis
-  discount_rate: 0.105 # nominal return based on 2024 ATB baseline workbook for fixed-bottom offshore wind
-  debt_equity_split: False # 2024 ATB uses 73.4% debt for offshore fixed-bottom wind
-  debt_equity_ratio: 2.75 # 2024 ATB uses 73.4% debt for offshore fixed-bottom wind
+  profast_general_inflation: 0 # 0 for real analysis
+  discount_rate: 
+    wind: 0.07 # real return based on 2024 ATB baseline workbook for fixed-bottom offshore wind
+    electrical_export_system: 0.07 # real return based on 2024 ATB baseline workbook for fixed-bottom offshore wind
+    solar: 0.059 # real return based on 2024 ATB baseline for utility-scale PV
+    battery: 0.066 # real return based on 2024 ATB baseline for utility-scale battery
+    electrolyzer: 0.102 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
+    h2_storage: 0.102 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
+  debt_equity_split: # percent debt
+    wind: 0.734 # 2024 ATB uses 72.4% debt for fixed-bottom offshore wind
+    electrical_export_system: 0.734 # 2024 ATB uses 73.4% debt for fixed-bottom offshore wind
+    solar: 0.753 # 2024 ATB uses 75.3% debt for utilty-scale PV
+    battery: 0.754 # Based on 2024 ATB for utility-scale PV-plus battery
+    electrolyzer: 0.385 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
+    h2_storage: 0.385 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
+  debt_interest_rate: 
+    wind: 0.044 # 2024 ATB real interest rate for fixed-bottom offshore wind
+    electrical_export_system: 0.044 # 2024 ATB real interest rate for fixed-bottom offshore wind
+    solar: 0.044 # 2024 ATB real interest rate for utilty-scale PV
+    battery: 0.044 # 2024 ATB real interest rate for utilty-scale battery
+    electrolyzer: 0.044 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
+    h2_storage: 0.044 # based on "Capital Structure for Techno-Economic Analysis of Hydrogen Projects" by Michael Penev, Andrew Gilbert, Neha Rustagi, Jamie Kee, Mariya Koleva, and Mark Chung
+  debt_equity_ratio: False
   property_tax: 0.0147 # average effective real property tax rate in Texas https://taxfoundation.org/data/all/state/property-taxes-by-state-county-2024/
   property_insurance: 0.03 # percent of CAPEX higher insurance due to being in a hurricane-prone area https://www.nrel.gov/docs/fy24osti/88195.pdf
-  total_income_tax_rate: 0.2175 # 0.257 tax rate in 2022 atb baseline workbook, the value used here is based on federal corporate income tax and the TX franchise tax. The TX franchise tax should be applied to margin but is included in income tax here as an approximation
+  total_income_tax_rate: 0.2574 # 0.257 tax rate in 2022 atb baseline workbook, the value used here is based on federal corporate income tax and the TX franchise tax. The TX franchise tax should be applied to margin but is included in income tax here as an approximation
   capital_gains_tax_rate: 0.15 # H2FAST default
-  sales_tax_rate: 0.082 # average combined state and local sales tax in TX https://taxfoundation.org/location/texas/
-  debt_interest_rate: 0.07 # nominal interest rate based on 2024 ATB for fixed-bottom offshore wind
+  sales_tax_rate: 0.0 # 0.082 # average combined state and local sales tax in TX https://taxfoundation.org/location/texas/
   debt_type: "Revolving debt" # can be "Revolving debt" or "One time loan". Revolving debt is H2FAST default and leads to much lower LCOH
   loan_period: 0 # H2FAST default, not used for revolving debt
   cash_onhand_months: 1 # H2FAST default
@@ -65,7 +85,7 @@ electrolyzer:
   uptime_hours_until_eol: 77600 #number of 'on' hours until electrolyzer reaches eol
   include_degradation_penalty: True #include degradation
   turndown_ratio: 0.1 #turndown_ratio = minimum_cluster_power/cluster_rating_MW
-  electrolyzer_capex: 2000 # $/kW overnight installed capital costs for a 1 MW system in 2022 USD/kW (DOE hydrogen program record 24005	Clean Hydrogen Production Cost Scenarios with PEM Electrolyzer Technology 05/20/24) (https://www.hydrogen.energy.gov/docs/hydrogenprogramlibraries/pdfs/24005-clean-hydrogen-production-cost-pem-electrolyzer.pdf?sfvrsn=8cb10889_1) 
+  electrolyzer_capex: 1295 # $/kW overnight installed capital costs for a 1 MW system in 2022 USD/kW (DOE hydrogen program record 24005	Clean Hydrogen Production Cost Scenarios with PEM Electrolyzer Technology 05/20/24) (https://www.hydrogen.energy.gov/docs/hydrogenprogramlibraries/pdfs/24005-clean-hydrogen-production-cost-pem-electrolyzer.pdf?sfvrsn=8cb10889_1) 
   replacement_cost_percent: 0.15 # percent of capex - H2A default case
   cost_model: "singlitico2021" # "basic" is a basic cost model based on H2a and HFTO program record for PEM electrolysis. "singlitico2021" uses cost estimates from that paper
 h2_transport_compressor:

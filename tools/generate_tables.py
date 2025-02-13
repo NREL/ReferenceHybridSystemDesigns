@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from hopp.utilities import load_yaml
 import yaml
-from hopp.simulation.technologies.resource import SolarResource, WindResource
 from hopp.simulation.technologies.sites import SiteInfo
 import os 
 # from geopy.geocoders import Nominatim
@@ -71,6 +70,8 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
     plant_files_path = "greenHEART/input-files/plant/"
     output_files_path = "greenHEART/output/data/"
 
+    latlon_format = "{:.4f}".format
+
     # get all reference design names
     reference_design_names = os.listdir(ref_sys_path)
 
@@ -89,14 +90,20 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
         print(f"Design: {design_name}")
         # load input files
         greenheart_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "greenheart"))
+        print("    GreenHEART input loaded")
         hopp_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "hopp"))
+        print("    HOPP input loaded")
         if get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "orbit"):
             orbit_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "orbit"), loader=CombinedLoader)
+            print("    ORBIT input loaded")
         else:
             orbit_input = False
-        ghout_path = get_filename_from_partial_name(ref_sys_path+design_name+"/"+output_files_path, "greenheart_output")
-        with open(ghout_path) as f:
-            greenheart_output = yaml.full_load(f)
+            print("    ORBIT input skipped")
+        
+        ghout_path = get_filename_from_partial_name(ref_sys_path+design_name+"/"+output_files_path, "output.yaml")
+        greenheart_output = load_yaml(ghout_path)
+        
+        print("    GreenHEART output loaded")
 
         # get lat lon
         lat = hopp_input["site"]["data"]["lat"]
@@ -118,31 +125,31 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
         qoi["Solar PV rating (MW)"] = hopp_input["technologies"]["pv"]["system_capacity_kw"]*1E-3
         qoi["Total generation rating (MW)"] = qoi["Wind farm rating (MW)"] + qoi["Solar PV rating (MW)"]
         qoi["Battery power rating (MW)"] = hopp_input["technologies"]["battery"]["system_capacity_kw"]*1E-3
-        qoi["Battery power rating (MWh)"] = hopp_input["technologies"]["battery"]["system_capacity_kwh"]*1E-3
+        qoi["Battery energy rating (MWh)"] = hopp_input["technologies"]["battery"]["system_capacity_kwh"]*1E-3
         # import pdb; pdb.set_trace()
         qoi["Hydrogen storage capacity (kt)"] = greenheart_output["h2_storage_capacity_kg"]*1E-6
         qoi["Hydrogen storage max fill rate (t/h)"] = greenheart_output["h2_storage_max_fill_rate_kg_hr"]*1E-3
-        qoi["Number of wind turbines"] = num_turbines
+        qoi["Number of wind turbines"] = int(num_turbines)
         qoi["Wind turbine rating (MW)"] = turbine_rating_kw*1E-3
 
         solar_filename = hopp_input["site"]["solar_resource_file"].split("/")[-1]
         wind_filename = hopp_input["site"]["wind_resource_file"].split("/")[-1]
 
         if qoi["On/Offshore"] == "Onshore":
-            qoi["Onshore latitude"] = float(lat)
-            qoi["Onshore longitude"] = float(lon)
+            qoi["Onshore latitude"] = str(latlon_format(float(lat)))
+            qoi["Onshore longitude"] = str(latlon_format(float(lon)))
         else:
-            qoi["Onshore latitude"] = float(solar_filename.split("_")[0])
-            qoi["Onshore longitude"] = float(solar_filename.split("_")[1])
+            qoi["Onshore latitude"] = str(latlon_format(float(solar_filename.split("_")[0])))
+            qoi["Onshore longitude"] = str(latlon_format(float(solar_filename.split("_")[1])))
 
         # qoi["Elevation (ft)"] = hopp_input["site"]["data"]["elev"]
 
         if qoi["On/Offshore"] == "Offshore":
-            qoi["Offshore latitude"] = float(lat)
-            qoi["Offshore longitude"] = float(lon)
-        # else:
-        #     qoi["Offshore latitude"] = "N/A
-        #     qoi["Offshore longitude"] = "N/A"
+            qoi["Offshore latitude"] = str(latlon_format(float(lat)))
+            qoi["Offshore longitude"] = str(latlon_format(float(lon)))
+        else:
+            qoi["Offshore latitude"] = " "
+            qoi["Offshore longitude"] = " "
 
         if orbit_input:
             qoi["Distance from shore (km)"] = orbit_input["site"]["distance_to_landfall"]
@@ -151,10 +158,8 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
         resource_path = Path(ref_sys_path, design_name, "greenHEART/input-files/weather/")
         full_solar_file_path = Path(resource_path, "solar", solar_filename).absolute()
         
-
         full_wind_file_path = Path(resource_path, "wind", wind_filename).absolute()
         site = SiteInfo(data=hopp_input["site"]["data"], solar_resource_file=full_solar_file_path, wind_resource_file=full_wind_file_path)
-        
         
         solar_resource = site.solar_resource
         qoi["Direct horizontal irradience (kWh/m$^2$)"] = np.average(solar_resource.data["df"])
@@ -162,21 +167,29 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
         wind_resource = site.wind_resource
         wind_data = wind_resource.data["data"]
         wind_speed = [W[2] for W in wind_data]
-        qoi["Average wind speed"] = np.average(wind_speed)
+        qoi["Average wind speed (m/s)"] = np.average(wind_speed)
 
         if "steel_capacity" in greenheart_output.keys() and greenheart_output["steel_capacity"] is not None:
-            qoi["Steel Capacity (Mt/yr)"] = greenheart_output["steel_capacity"][0]["steel_plant_capacity_mtpy"]*1E-6
+            qoi["Steel capacity (Mt/yr)"] = greenheart_output["steel_capacity"]["steel_plant_capacity_mtpy"]*1E-6
+        else:
+            qoi["Steel capacity (Mt/yr)"] = None
         
         if "ammonia_capacity" in greenheart_output.keys() and greenheart_output["ammonia_capacity"] is not None:
-            qoi["Ammonia Capacity (kt/yr)"] = greenheart_output["ammonia_capacity"][0]["ammonia_plant_capacity_kgpy"]*1E-6
+            qoi["Ammonia capacity (kt/yr)"] = greenheart_output["ammonia_capacity"]["ammonia_plant_capacity_kgpy"]*1E-6
+        else:
+            qoi["Ammonia capacity (kt/yr)"] = None
 
-        qoi["LCOH (USD/kg)"] = greenheart_output["lcoh"]
+        qoi["LCOH (USD/kg-H$_2$)"] = greenheart_output["lcoh"]
 
         if "steel_finance" in greenheart_output.keys() and greenheart_output["steel_finance"] is not None:
-            qoi["LCOS (USD/t)"] = greenheart_output["steel_finance"][0]["sol"]["price"]
+            qoi["LCOS (USD/t steel)"] = greenheart_output["steel_finance"]["sol"]["price"]
+        else:
+            qoi["LCOS (USD/t steel)"] = None
         
         if "ammonia_finance" in greenheart_output.keys() and greenheart_output["ammonia_finance"] is not None:
-            qoi["LCOA (USD/kg)"] = greenheart_output["ammonia_finance"][0]["sol"]["price"]
+            qoi["LCOA (USD/kg-NH$_3$)"] = greenheart_output["ammonia_finance"]["sol"]["price"]
+        else:
+            qoi["LCOA (USD/kg-NH$_3$)"] = None
 
         qoi_dictionary_list.append(qoi)
     
@@ -191,7 +204,7 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
     # Combine the rounded numeric columns with the non-numeric columns
     # qoi_df = pd.concat([qoi_df_numeric_rounded, qoi_df.select_dtypes(exclude=[np.number])], axis=1)
 
-    general_format = "{:.4f}".format
+    general_format = "{:,.1f}".format
     # formatters = {
     #     'Onshore latitude': lambda x: f"{x:.4f}", 
     #     'Offshore longitude': lambda x: f"{x:.4f}",   
@@ -199,13 +212,139 @@ def comparison_table(designs_to_compare=["01", "02", "03", "04", "05"]):
     #     'Offshore longitude': lambda x: f"{x:.4f}"
     # }
 
-    # print latex table
-    print(qoi_df.dtypes)
-    print(qoi_df.round(2))
-    print(qoi_df.fillna("N/A").T.to_latex(float_format=general_format))
+    for column in qoi_df.columns:
+        if isinstance(qoi_df[column].min(), float):
+            if (qoi_df[column].min() > 99): 
+                qoi_df[column] = qoi_df[column].round(decimals=0)
+            else:
+                qoi_df[column] = qoi_df[column].round(decimals=2)
+
+    # make short version for executive summary
+    es_columns = ["State", "Area", "Product", "On/Offshore", "PEM electrolyzer rating (MW)", 
+                  "Wind farm rating (MW)", "Solar PV rating (MW)", "Total generation rating (MW)", 
+                  "Battery power rating (MW)", "Battery energy rating (MWh)", "Hydrogen storage capacity (kt)",
+                  "Steel capacity (Mt/yr)", "Ammonia capacity (kt/yr)", "LCOH (USD/kg-H$_2$)", 
+                  "LCOS (USD/t steel)", "LCOA (USD/kg-NH$_3$)"]
+    
+    qoi_es_df = qoi_df[es_columns]
+
+    # print full latex table
+    print(qoi_df.fillna(" ").T.to_latex(float_format=general_format))
+
+    # print executive summary table
+    print(qoi_es_df.fillna(" ").T.to_latex(float_format=general_format))
 
     return 0
+
+def financial_inputs_table(designs_to_compare=["01", "02", "03", "04", "05"]):
+    ref_sys_path = "../reference-systems/"
+    plant_files_path = "greenHEART/input-files/plant/"
+    output_files_path = "greenHEART/output/data/"
+
+    # get all reference design names
+    reference_design_names = os.listdir(ref_sys_path)
+
+    # define region/area
+    regions = {"01": "", "02": "", "03": "Gulf Coast", "04": "New York Bight", "05": ""}
+    products = {"01": "Steel", "02": "Ammonia", "03": "Hydrogen", "04": "Hydrogen", "05": "Hydrogen"}
+    foundation_type = {"01": "", "02": "", "03": "Fixed", "04": "Fixed", "05": "Floating"}
+    storage_keys = {"lined_rock_cavern": "Rock cavern", "salt_cavern": "Salt cavern", "none": "None", "pipe": "Underground pipes", "turbine": "In-turbine", "pressure_vessel": "Pressure vessel"}
+    states = {"01": "Minnesota", "02": "Texas", "03": "Texas", "04": "New Jersey", "05": "California"}
+
+    qoi_dictionary_list = []
+    # loop over designs
+    for design in designs_to_compare:
+        # get full design name
+        design_name = [s for s in reference_design_names if design in s][0]
+        print(f"Design: {design_name}")
+        # load input files
+        greenheart_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "greenheart"))
+        print("    GreenHEART input loaded")
+        hopp_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "hopp"))
+        print("    HOPP input loaded")
+        financial_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "fin"))
+        gh_financial_parameters = greenheart_input["finance_parameters"]
+        print("    Financial input loaded")
+        if get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "orbit"):
+            orbit_input = load_yaml(get_filename_from_partial_name(ref_sys_path+design_name+"/"+plant_files_path, "orbit"), loader=CombinedLoader)
+            print("    ORBIT input loaded")
+        else:
+            orbit_input = False
+            print("    ORBIT input skipped")
+
+        if "ammonia" in greenheart_input:
+            roe_ammonia = greenheart_input["ammonia"]["finances"]["financial_assumptions"]["leverage after tax nominal discount rate"]
+            debt_ratio_ammonia = greenheart_input["ammonia"]["finances"]["financial_assumptions"]["debt equity ratio of initial financing"]
+            debt_percent_ammonia = debt_ratio_ammonia/(debt_ratio_ammonia + 1.0)
+            debt_rate_steel_ammonia = greenheart_input["ammonia"]["finances"]["financial_assumptions"]["debt interest rate"]
+        else:
+            roe_ammonia = np.nan
+            debt_percent_ammonia = np.nan
+            debt_rate_steel_ammonia = np.nan
+
+        if "steel" in greenheart_input:
+            roe_steel = greenheart_input["steel"]["finances"]["financial_assumptions"]["leverage after tax nominal discount rate"]
+            debt_ratio_steel = greenheart_input["steel"]["finances"]["financial_assumptions"]["debt equity ratio of initial financing"]
+            debt_percent_steel = debt_ratio_steel/(debt_ratio_steel + 1.0)
+            debt_rate_steel_ammonia = greenheart_input["steel"]["finances"]["financial_assumptions"]["debt interest rate"]
+        else:
+            roe_steel = np.nan
+            debt_percent_steel = np.nan
+
+        # get QOIs
+        qoi = {}
+        qoi["ID"] = design
+        qoi["State"] = states[design]
+        qoi["Area"] = regions[design]
+        qoi["Product"] = products[design]
+        qoi["Real ROE wind (\%)"] = gh_financial_parameters["discount_rate"]["wind"]*100
+        qoi["Real ROE PV (\%)"] = gh_financial_parameters["discount_rate"]["solar"]*100
+        qoi["Real ROE battery (\%)"] = gh_financial_parameters["discount_rate"]["battery"]*100
+        qoi["Real ROE hydrogen (\%)"] = gh_financial_parameters["discount_rate"]["electrolyzer"]*100
+        qoi["Real ROE steel (\%)"] = roe_steel*100
+        qoi["Real ROE ammonia (\%)"] = roe_ammonia*100
+        qoi["Federal income tax rate (\%)"] = financial_input["financial_parameters"]["federal_tax_rate"]
+        qoi["Capital gains tax rate (\%)"] = financial_input["financial_parameters"]["capital_gains_tax_rate"]
+        qoi["State income tax rate (\%)"] = financial_input["financial_parameters"]["state_tax_rate"]
+        qoi["Property tax rate (\%)"] = financial_input["financial_parameters"]["property_tax_rate"]
+        qoi["Sales tax rate (\%)"] = financial_input["financial_parameters"]["sales_tax_rate_state"]
+        qoi["Insurance rate (\%)"] = financial_input["financial_parameters"]["insurance_rate"]
+        qoi["Debt percentage wind (\%)"] = gh_financial_parameters["debt_equity_split"]["wind"]*100
+        qoi["Debt percentage PV (\%)"] = gh_financial_parameters["debt_equity_split"]["solar"]*100
+        qoi["Debt percentage battery (\%)"] = gh_financial_parameters["debt_equity_split"]["battery"]*100
+        qoi["Debt percentage hydrogen (\%)"] = gh_financial_parameters["debt_equity_split"]["electrolyzer"]*100
+        qoi["Debt percentage steel (\%)"] = debt_percent_steel*100
+        qoi["Debt percentage ammonia (\%)"] = debt_percent_ammonia*100
+        qoi["Debt interest rate (\%)"] = financial_input["financial_parameters"]["term_int_rate"]
+        qoi["Debt interest rate steel/ammonia (\%)"] = debt_rate_steel_ammonia*100
+        qoi["Months working reserve"] = financial_input["financial_parameters"]["months_working_reserve"]
+        qoi["Debt type"] = "Revolving" #financial_input["financial_parameters"]["debt_type"]
+        qoi["Depr. method"] = financial_input["financial_parameters"]["depreciation_method"]
+        qoi["Depr. period (clean energy) (years)"] = financial_input["financial_parameters"]["depreciation_period"]
+        qoi["Depr. period (hydrogen) (years)"] = greenheart_input["finance_parameters"]["depreciation_period_electrolyzer"]
+
+        qoi_dictionary_list.append(qoi)
+    
+    # create dataframe
+    qoi_df = pd.DataFrame(qoi_dictionary_list)
+    qoi_df = qoi_df.set_index(keys=["ID"], drop=True)
+
+    # general_format = "{:,.2f}".format
+    qoi_df.style.format(thousands=",")
+
+    general_format = "{:,.2f}".format
+
+    for column in qoi_df.columns:
+        if isinstance(qoi_df[column].min(), float):
+            if (qoi_df[column].min() > 99): 
+                qoi_df[column] = qoi_df[column].round(decimals=0)
+            else:
+                qoi_df[column] = qoi_df[column].round(decimals=2)
+
+    print(qoi_df.fillna(" ").T.to_latex(float_format=general_format))
+
 
 if __name__ == "__main__":
 
     comparison_table()
+    financial_inputs_table()
