@@ -62,7 +62,7 @@ technologies:
         term_int_rate: 4.4 # 2024 ATB real interest rate for fixed-bottom offshore wind
         months_working_reserve: 1
         analysis_start_year: 2030
-        installation_months: 12
+        installation_months: 36
         sales_tax_rate_state: 0.0 # 6.625 # state sales tax in New Jersey https://www.nj.gov/treasury/taxation/businesses/salestax/index.shtml#:~:text=New%20Jersey%20assesses%20a%206.625,exempt%20under%20New%20Jersey%20law.
         admin_expense_percent_of_sales: 0.0 # H2FAST default
         capital_gains_tax_rate: 15.0 # H2FAST default
