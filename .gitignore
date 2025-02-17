@@ -1,7 +1,7 @@
 *.pyc
 *.DS_Store
 *output
-speed_dir
+*speed_dir_data*
 post-process.py
 */images/*
 */log/*
